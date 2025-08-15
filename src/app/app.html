@@ -1,0 +1,21 @@
+<header class="header-back"></header>
+<header class="header-root">
+  <section class="header-left-side">
+    <a href="/" class="header-button" tuiButton appearance="flat">
+      <p class="header-logo">✂️</p>
+      <p>URL-Shortener</p>
+    </a>
+  </section>
+  <section class="header-right-side">
+    <button tuiButton appearance="flat" class="header-button" (click)="exit()">
+      <img class="header-icon" src="svg/exit.svg" alt="Exit" />
+    </button>
+    <a tuiButton appearance="flat" class="header-button" href="/account">
+      <img class="header-icon" src="svg/account.svg" alt="Account" />
+    </a>
+  </section>
+</header>
+
+<div class="router-outlet-wrapper">
+  <router-outlet></router-outlet>
+</div>
