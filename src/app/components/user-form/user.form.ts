@@ -1,5 +1,5 @@
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { isUser, Optional, User } from "../../common/types";
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { isUser, Optional, User } from '../../common/types';
 
 export type UserFormMode = 'login' | 'register';
 
@@ -8,26 +8,20 @@ export class UserForm extends FormGroup {
 
   constructor(mode: UserFormMode) {
     const controls = {
-      login: new FormControl<User['login']>(null,
-        {
-          nonNullable: true,
-          validators: [Validators.required, Validators.minLength(3)],
-        }
-      ),
-      password: new FormControl<User['password']>(null,
-        {
-          nonNullable: true,
-          validators: [Validators.required, Validators.minLength(6)],
-        }
-      ),
-    }
+      login: new FormControl<User['login']>(null, {
+        nonNullable: true,
+        validators: [Validators.required, Validators.minLength(3)],
+      }),
+      password: new FormControl<User['password']>(null, {
+        nonNullable: true,
+        validators: [Validators.required, Validators.minLength(6)],
+      }),
+    };
     if (mode === 'register') {
-      controls['confirmPassword'] = new FormControl<User['password']>(null,
-        {
-          nonNullable: true,
-          validators: [Validators.required, Validators.minLength(6)],
-        }
-      );
+      controls['confirmPassword'] = new FormControl<User['password']>(null, {
+        nonNullable: true,
+        validators: [Validators.required, Validators.minLength(6)],
+      });
     }
     super(controls);
     this.mode = mode;

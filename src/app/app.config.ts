@@ -1,5 +1,5 @@
-import { provideEventPlugins } from "@taiga-ui/event-plugins";
-import { provideAnimations } from "@angular/platform-browser/animations";
+import { provideEventPlugins } from '@taiga-ui/event-plugins';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import {
   ApplicationConfig,
   provideBrowserGlobalErrorListeners,
@@ -10,10 +10,10 @@ import { appRoutes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-        provideAnimations(),
-        provideBrowserGlobalErrorListeners(),
+    provideAnimations(),
+    provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(appRoutes),
-        provideEventPlugins()
-    ],
+    provideEventPlugins(),
+  ],
 };

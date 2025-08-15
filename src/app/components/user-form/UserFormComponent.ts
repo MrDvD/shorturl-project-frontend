@@ -8,7 +8,15 @@ import { TuiFieldErrorPipe } from '@taiga-ui/kit';
 
 @Component({
   selector: 'app-user-form-component',
-  imports: [CommonModule, TuiForm, ReactiveFormsModule, TuiTextfield, TuiButton, TuiError, TuiFieldErrorPipe],
+  imports: [
+    CommonModule,
+    TuiForm,
+    ReactiveFormsModule,
+    TuiTextfield,
+    TuiButton,
+    TuiError,
+    TuiFieldErrorPipe,
+  ],
   templateUrl: './UserFormComponent.html',
   styleUrl: './UserFormComponent.less',
 })

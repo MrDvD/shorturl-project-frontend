@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  imports: [ RouterModule, TuiButton ],
+  imports: [RouterModule, TuiButton],
   selector: 'app-root',
   templateUrl: './app.html',
   styleUrl: './app.less',
