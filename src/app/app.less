@@ -1,0 +1,29 @@
+@import './resources/less/header.less';
+@import './resources/less/fonts.less';
+
+:host {
+  flex: 1 1 auto;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: 1fr @desktop-width 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas: "left-header-side header right-header-side" "left-window-side window right-window-side";
+
+  font-family: "Roboto";
+  font-weight: 400;
+  font-size: 15px;
+
+  @media (max-width: @desktop-width) {
+    grid-template-columns: 0 100vw 0;
+  }
+}
+
+.router-outlet-wrapper {
+  box-sizing: border-box;
+  grid-area: window;
+
+  @media (max-width: @mobile-width) {
+    padding: 0 10px;
+  }
+}

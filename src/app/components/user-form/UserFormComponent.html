@@ -1,0 +1,55 @@
+<form tuiForm="l" [formGroup]="userForm" class="user-form" (ngSubmit)="sendForm()">
+  <header class="user-form-header">
+    <b>{{ userForm.getTitle() }}</b>
+  </header>
+
+  <tui-textfield>
+    <label tuiLabel>Логин</label>
+    <input
+        formControlName="login"
+        tuiTextfield
+    />
+  </tui-textfield>
+  <tui-error
+    formControlName="login"
+    [error]="[] | tuiFieldError | async"
+  ></tui-error>
+
+
+  <tui-textfield>
+    <label tuiLabel>Пароль</label>
+    <input
+        formControlName="password"
+        tuiTextfield
+    />
+  </tui-textfield>
+  <tui-error
+    formControlName="password"
+    [error]="[] | tuiFieldError | async"
+  ></tui-error>
+  @if ( userFormMode === 'register' ) {
+    <tui-textfield>
+      <label tuiLabel>Повторите пароль</label>
+      <input
+          formControlName="confirmPassword"
+          tuiTextfield
+      />
+    </tui-textfield>
+    <tui-error
+      formControlName="confirmPassword"
+      [error]="[] | tuiFieldError | async"
+    ></tui-error>
+  }
+  <div class="button-group">
+  @switch (userFormMode) {
+    @case ('login') {
+      <a tuiButton appearence="secondary" class="enter-button" href="/register">Регистрация</a>
+      <button tuiButton appearence="primary" type="submit" class="enter-button">Вход</button>
+    }
+    @case ('register') {
+      <a tuiButton appearence="secondary" class="enter-button" href="/login">Вход</a>
+      <button tuiButton appearence="primary" type="submit" class="enter-button">Регистрация</button>
+    }
+  }
+  </div>
+</form>
