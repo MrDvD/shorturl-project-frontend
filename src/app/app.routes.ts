@@ -1,6 +1,7 @@
 import { Route } from '@angular/router';
 import { EnterPageComponent } from './pages/enter-page-component/EnterPageComponent';
 import { GenerateLinkPageComponent } from './pages/generate-link-page-component/GenerateLinkPageComponent';
+import { ListLinkPageComponent } from './pages/list-link-page-component/ListLinkPageComponent';
 
 export const appRoutes: Route[] = [
   {
@@ -17,5 +18,10 @@ export const appRoutes: Route[] = [
     path: 'generate-url',
     component: GenerateLinkPageComponent,
     data: { title: 'Новая ссылка' },
+  },
+  {
+    path: 'list-url',
+    component: ListLinkPageComponent,
+    data: { title: 'Мои ссылки' },
   },
 ];
