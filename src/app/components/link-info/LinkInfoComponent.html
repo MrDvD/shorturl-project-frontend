@@ -7,7 +7,7 @@
       appearance="flat"
       size="s"
       [tuiDropdown]="dropdown"
-      [(tuiDropdownOpen)]="open"
+      [(tuiDropdownOpen)]="isMenuOpened"
     >
       <img src="svg/menu.svg" alt="Menu" />
     </button>
@@ -55,4 +55,7 @@
       }
     </tui-opt-group>
   </tui-data-list>
+</ng-template>
+<ng-template [(tuiDialog)]="isEditOpened">
+  <app-link-form-component appEditLinkForm></app-link-form-component>
 </ng-template>

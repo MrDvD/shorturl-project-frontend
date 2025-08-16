@@ -1,19 +1,16 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  Input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TuiCardLarge } from '@taiga-ui/layout';
 import {
   TuiAppearance,
   TuiButton,
   TuiDataList,
-  TuiDialogService,
+  TuiDialog,
   TuiDropdown,
   TuiTextfield,
 } from '@taiga-ui/core';
+import { LinkFormComponent } from '../link-form/LinkFormComponent';
+import { EditLinkForm } from '../../directives/edit-link-form/EditLinkForm';
 
 @Component({
   selector: 'app-link-info-component',
@@ -25,6 +22,9 @@ import {
     TuiTextfield,
     TuiDropdown,
     TuiDataList,
+    TuiDialog,
+    LinkFormComponent,
+    EditLinkForm,
   ],
   templateUrl: './LinkInfoComponent.html',
   styleUrl: './LinkInfoComponent.less',
@@ -36,14 +36,14 @@ export class LinkInfoComponent {
   @Input({ required: true }) url = '';
   @Input({ required: true }) creationDate = '';
   @Input() lastUpdatedDate = '';
-  protected open = false;
-  private readonly dialogs = inject(TuiDialogService);
+  protected isMenuOpened = false;
+  protected isEditOpened = false;
 
   public copyLink(): void {
     navigator.clipboard.writeText(this.url);
   }
 
   public editLink(): void {
-    this.dialogs.open('Hello!').subscribe();
+    this.isEditOpened = true;
   }
 }
