@@ -1,5 +1,3 @@
-import { FormGroup } from '@angular/forms';
-
 export type Optional<T> = T | null;
 
 export type UID<T> = {
@@ -12,6 +10,15 @@ export type User = {
   password: string;
 };
 
-export function isUser(raw: ReturnType<FormGroup['getRawValue']>): raw is User {
-  return typeof raw.login === 'string' && typeof raw.password === 'string';
-}
+export type LinkType = 'short' | 'named';
+
+export type Link = {
+  full_link: string;
+  type: LinkType;
+  short_id?: string;
+  has_expire: boolean;
+  expire: Date;
+  has_metadata: boolean;
+  name?: string;
+  description?: string;
+};

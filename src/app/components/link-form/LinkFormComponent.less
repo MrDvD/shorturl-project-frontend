@@ -1,0 +1,64 @@
+:host {
+  display: flex;
+  width: stretch;
+  flex: 1;
+}
+
+.link-form {
+  margin: auto;
+  margin-top: 35px;
+  flex: 1 1 500px;
+  max-width: 500px;
+  padding: 25px;
+  border-radius: 20px;
+
+  .user-form-header {
+    display: flex;
+    justify-content: center;
+    user-select: none;
+  }
+
+  .submit-button {
+    img {
+      width: 24px;
+      filter: invert(1);
+    }
+  }
+
+  .form-oneline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .wide {
+      flex: 1;
+      label {
+        justify-content: center;
+      }
+    }
+
+    p {
+      text-wrap: nowrap;
+    }
+  }
+
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .button-group {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+
+    .enter-button {
+      flex: 1 1 40%;
+    }
+  }
+}
+
+[hidden] {
+  display: none !important;
+}
