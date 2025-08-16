@@ -1,5 +1,5 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { isUser, Optional, User } from '../../common/types';
+import { Optional, User } from '../../common/types';
 
 export type UserFormMode = 'login' | 'register';
 
@@ -7,21 +7,28 @@ export class UserForm extends FormGroup {
   private readonly mode: UserFormMode;
 
   constructor(mode: UserFormMode) {
-    const controls = {
-      login: new FormControl<User['login']>(null, {
+    let controls: {
+      login: FormControl<User['login'] | null>;
+      password: FormControl<User['password'] | null>;
+      confirmPassword?: FormControl<User['password'] | null>;
+    } = {
+      login: new FormControl<User['login'] | null>(null, {
         nonNullable: true,
         validators: [Validators.required, Validators.minLength(3)],
       }),
-      password: new FormControl<User['password']>(null, {
+      password: new FormControl<User['password'] | null>(null, {
         nonNullable: true,
         validators: [Validators.required, Validators.minLength(6)],
       }),
     };
     if (mode === 'register') {
-      controls['confirmPassword'] = new FormControl<User['password']>(null, {
-        nonNullable: true,
-        validators: [Validators.required, Validators.minLength(6)],
-      });
+      controls = {
+        ...controls,
+        confirmPassword: new FormControl<User['password'] | null>(null, {
+          nonNullable: true,
+          validators: [Validators.required, Validators.minLength(6)],
+        }),
+      };
     }
     super(controls);
     this.mode = mode;
@@ -39,13 +46,6 @@ export class UserForm extends FormGroup {
   }
 
   public getUser(): Optional<User> {
-    const rawUser = this.getRawValue();
-    if (this.valid && isUser(rawUser)) {
-      return {
-        login: rawUser.login,
-        password: rawUser.password,
-      };
-    }
-    return null;
+    return this.valid ? this.getRawValue() : null;
   }
 }

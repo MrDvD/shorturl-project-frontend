@@ -1,0 +1,166 @@
+@if (!isSent) {
+<form
+  tuiForm="l"
+  [formGroup]="linkForm"
+  tuiAppearance="floating"
+  class="link-form"
+  (ngSubmit)="sendForm()"
+>
+  <div class="form-oneline">
+    <tui-textfield class="wide">
+      <label tuiLabel htmlFor="full_link">Вставьте ссылку</label>
+      <input formControlName="full_link" tuiTextfield />
+    </tui-textfield>
+    <button tuiButton appearance="primary" type="submit" class="submit-button">
+      <img src="svg/right-arrow.svg" alt="Send" />
+    </button>
+  </div>
+  <tui-error
+    formControlName="full_link"
+    [error]="[] | tuiFieldError | async"
+  ></tui-error>
+
+  @if (linkForm.getFullLink().value) {
+  <div class="form-oneline">
+    <p>Тип ссылки:</p>
+    <div tuiGroup class="wide">
+      <label tuiBlock>
+        сокращенная
+        <input type="radio" tuiBlock value="short" formControlName="type" />
+      </label>
+      <label tuiBlock>
+        именованная
+        <input type="radio" tuiBlock value="named" formControlName="type" />
+      </label>
+    </div>
+  </div>
+  <tui-error
+    formControlName="type"
+    [error]="[] | tuiFieldError | async"
+  ></tui-error>
+
+  @if (linkForm.getType().value === 'named') {
+  <div class="form-oneline">
+    <p>http://mydomain.ru/{{ username }}/</p>
+    <label class="wide">
+      <tui-textfield>
+        <input
+          formControlName="short_id"
+          placeholder="link"
+          tuiTextfield
+          [appIgnoreDisabledValidators]="linkForm.getType().value !== 'named'"
+        />
+      </tui-textfield>
+    </label>
+  </div>
+  <tui-error
+    formControlName="short_id"
+    [error]="[] | tuiFieldError | async"
+  ></tui-error>
+  }
+
+  <div class="form-oneline">
+    <p>Срок жизни:</p>
+    <div tuiGroup class="wide">
+      <label tuiBlock>
+        бессрочно
+        <input
+          type="radio"
+          tuiBlock
+          [value]="false"
+          formControlName="has_expire"
+        />
+      </label>
+      <label tuiBlock>
+        временно
+        <input
+          type="radio"
+          tuiBlock
+          [value]="true"
+          formControlName="has_expire"
+        />
+      </label>
+    </div>
+  </div>
+  <tui-error
+    formControlName="has_expire"
+    [error]="[] | tuiFieldError | async"
+  ></tui-error>
+
+  @if (linkForm.getHasExpire().value) {
+  <div class="form-oneline">
+    <p>До:</p>
+    <tui-textfield class="wide">
+      <input
+        tuiInputDateTime
+        formControlName="expire"
+        [appIgnoreDisabledValidators]="!linkForm.getHasExpire().value"
+      />
+      <tui-calendar *tuiTextfieldDropdown />
+    </tui-textfield>
+  </div>
+  <tui-error
+    formControlName="expire"
+    [error]="[] | tuiFieldError | async"
+  ></tui-error>
+  }
+  <label class="checkbox-label">
+    <input
+      size="m"
+      tuiCheckbox
+      type="checkbox"
+      formControlName="has_metadata"
+    />
+    Добавить метаданные
+  </label>
+  @if (linkForm.getHasMetadata().value) {
+  <tui-textfield>
+    <label tuiLabel htmlFor="name">Название</label>
+    <input
+      formControlName="name"
+      tuiTextfield
+      [appIgnoreDisabledValidators]="!linkForm.getHasMetadata().value"
+    />
+  </tui-textfield>
+  <tui-error
+    formControlName="name"
+    [error]="[] | tuiFieldError | async"
+  ></tui-error>
+  <tui-textfield>
+    <label tuiLabel htmlFor="description">Описание</label>
+    <textarea
+      formControlName="description"
+      tuiTextarea
+      [appIgnoreDisabledValidators]="!linkForm.getHasMetadata().value"
+    ></textarea>
+  </tui-textfield>
+  <tui-error
+    formControlName="description"
+    [error]="[] | tuiFieldError | async"
+  ></tui-error>
+  } }
+</form>
+} @else {
+<form tuiForm="l" class="link-form" tuiAppearance="floating">
+  <div class="form-oneline">
+    <tui-textfield class="wide">
+      <label htmlFor="resultLink">Скопируйте результат</label>
+      <input tuiTextfield [formControl]="resultLink" [readOnly]="true" />
+    </tui-textfield>
+    <button
+      tuiButton
+      appearance="primary"
+      type="button"
+      class="submit-button"
+      (click)="copyLink()"
+    >
+      <img src="svg/copy.svg" alt="Copy" />
+    </button>
+  </div>
+  <div class="form-oneline">
+    <button tuiButton appearance="secondary" class="wide" (click)="newForm()">
+      Создать новую ссылку
+    </button>
+  </div>
+</form>
+}

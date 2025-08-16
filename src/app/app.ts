@@ -1,9 +1,9 @@
-import { TuiButton } from '@taiga-ui/core';
+import { TuiButton, TuiRoot } from '@taiga-ui/core';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  imports: [RouterModule, TuiButton],
+  imports: [RouterModule, TuiButton, TuiRoot],
   selector: 'app-root',
   templateUrl: './app.html',
   styleUrl: './app.less',
