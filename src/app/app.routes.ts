@@ -2,6 +2,7 @@ import { Route } from '@angular/router';
 import { EnterPageComponent } from './pages/enter-page-component/EnterPageComponent';
 import { GenerateLinkPageComponent } from './pages/generate-link-page-component/GenerateLinkPageComponent';
 import { ListLinkPageComponent } from './pages/list-link-page-component/ListLinkPageComponent';
+import { ServicesPageComponent } from './pages/services-page-component/ServicesPageComponent';
 
 export const appRoutes: Route[] = [
   {
@@ -23,5 +24,11 @@ export const appRoutes: Route[] = [
     path: 'list-url',
     component: ListLinkPageComponent,
     data: { title: 'Мои ссылки' },
+  },
+  {
+    path: '',
+    pathMatch: 'full',
+    component: ServicesPageComponent,
+    data: { title: 'Мои сервисы' },
   },
 ];
