@@ -7,6 +7,7 @@ export type UID<T> = {
 
 export type User = {
   login: string;
+  email?: string;
   password: string;
 };
 

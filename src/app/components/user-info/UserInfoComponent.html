@@ -1,0 +1,29 @@
+<form tuiForm="l" tuiAppearance="floating" class="app-form">
+  <tui-textfield>
+    <label tuiLabel htmlFor="login">Логин</label>
+    <input tuiTextfield [disabled]="true" value="{{ login }}" />
+  </tui-textfield>
+  <div class="inline-group">
+    <tui-textfield class="wide">
+      <label tuiLabel htmlFor="email">Email</label>
+      <input tuiTextfield [formControl]="email" #emailInput />
+    </tui-textfield>
+    <button
+      type="button"
+      tuiButton
+      appearance="secondary"
+      class="icon-button"
+      (click)="editEmail()"
+    >
+      <img src="svg/pen.svg" alt="Edit" />
+    </button>
+  </div>
+  <div class="inline-group">
+    <button tuiButton appearance="primary" class="wide" type="button">
+      Смена пароля
+    </button>
+    <button tuiButton appearance="accent" class="wide" type="button">
+      Удалить аккаунт
+    </button>
+  </div>
+</form>

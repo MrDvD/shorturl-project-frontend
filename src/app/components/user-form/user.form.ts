@@ -9,6 +9,7 @@ export class UserForm extends FormGroup {
   constructor(mode: UserFormMode) {
     let controls: {
       login: FormControl<User['login'] | null>;
+      email?: FormControl<User['email'] | null>;
       password: FormControl<User['password'] | null>;
       confirmPassword?: FormControl<User['password'] | null>;
     } = {
@@ -27,6 +28,10 @@ export class UserForm extends FormGroup {
         confirmPassword: new FormControl<User['password'] | null>(null, {
           nonNullable: true,
           validators: [Validators.required, Validators.minLength(6)],
+        }),
+        email: new FormControl<User['email'] | null>(null, {
+          nonNullable: true,
+          validators: [Validators.required, Validators.email],
         }),
       };
     }
