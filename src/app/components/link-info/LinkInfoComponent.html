@@ -1,6 +1,6 @@
 <div tuiCardLarge tuiAppearance="outline" class="link-info-card">
   <header class="link-info-header">
-    <h4>{{ name }}</h4>
+    <h4>{{ getLink().name ?? 'Сокращенная ссылка' }}</h4>
     <button
       class="menu-button"
       tuiButton
@@ -12,23 +12,35 @@
       <img src="svg/menu.svg" alt="Menu" />
     </button>
   </header>
-  @if (description) {
-  <p>{{ description }}</p>
+  @if (getLink().description) {
+  <p>{{ getLink().description }}</p>
   }
   <footer class="link-info-footer">
     <tui-textfield class="wide" tuiTextfieldSize="s">
-      <input type="text" [readOnly]="true" tuiTextfield value="{{ url }}" />
+      <input
+        type="text"
+        [readOnly]="true"
+        tuiTextfield
+        value="{{ getLink() | formatLink }}"
+      />
     </tui-textfield>
     <button
       tuiButton
       appearance="flat"
       size="s"
       type="button"
-      (click)="copyLink()"
+      (click)="copyShortLink()"
     >
       <img src="svg/copy.svg" alt="Copy" />
     </button>
-    <button tuiButton appearance="flat" size="s" type="button">
+    <button
+      tuiButton
+      appearance="flat"
+      size="s"
+      type="button"
+      [tuiHint]="fullLink"
+      (click)="copyFullLink()"
+    >
       <img src="svg/view.svg" alt="View" />
     </button>
   </footer>
@@ -45,17 +57,21 @@
     <tui-opt-group>
       <div tuiOption ignore-selection>
         <b>Создано</b>
-        <p>{{ creationDate }}</p>
+        <p>{{ getLink().create_date | formatDate }}</p>
       </div>
-      @if (lastUpdatedDate) {
+      @if (getLink(); as linkObject) { @if (linkObject | wasUpdated) {
       <div tuiOption ignore-selection>
         <b>Изменено</b>
-        <p>{{ lastUpdatedDate }}</p>
+        <p>{{ linkObject.update_date | formatDate }}</p>
       </div>
-      }
+      } }
     </tui-opt-group>
   </tui-data-list>
 </ng-template>
 <ng-template [(tuiDialog)]="isEditOpened">
-  <app-link-form-component appEditLinkForm></app-link-form-component>
+  <app-link-form-component
+    appEditLinkForm
+    [linkId]="1"
+  ></app-link-form-component>
 </ng-template>
+<ng-template #fullLink> {{ getLink().full_link }} </ng-template>

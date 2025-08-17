@@ -7,10 +7,15 @@ import {
   TuiDataList,
   TuiDialog,
   TuiDropdown,
+  TuiHint,
   TuiTextfield,
 } from '@taiga-ui/core';
 import { LinkFormComponent } from '../link-form/LinkFormComponent';
 import { EditLinkForm } from '../../directives/edit-link-form/EditLinkForm';
+import { FormatDatePipe } from '../../pipes/format-date/FormatDate-pipe';
+import { Link, UID } from '../../common/types';
+import { WasUpdatedPipe } from '../../pipes/was-updated/WasUpdated-pipe';
+import { FormatLinkPipe } from '../../pipes/format-link/FormatLink-pipe';
 
 @Component({
   selector: 'app-link-info-component',
@@ -25,22 +30,45 @@ import { EditLinkForm } from '../../directives/edit-link-form/EditLinkForm';
     TuiDialog,
     LinkFormComponent,
     EditLinkForm,
+    FormatDatePipe,
+    WasUpdatedPipe,
+    FormatLinkPipe,
+    TuiHint,
   ],
   templateUrl: './LinkInfoComponent.html',
   styleUrl: './LinkInfoComponent.less',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LinkInfoComponent {
-  @Input() name = 'Сокращенная ссылка';
-  @Input() description: string | null = '';
-  @Input({ required: true }) url = '';
-  @Input({ required: true }) creationDate = '';
-  @Input() lastUpdatedDate = '';
+  @Input({ required: true }) link: UID<Link> | null = null;
+  private formatLink = new FormatLinkPipe();
   protected isMenuOpened = false;
   protected isEditOpened = false;
 
-  public copyLink(): void {
-    navigator.clipboard.writeText(this.url);
+  public copyShortLink(): void {
+    if (this.link) {
+      navigator.clipboard.writeText(this.formatLink.transform(this.link.item));
+    }
+  }
+
+  public copyFullLink(): void {
+    if (this.link) {
+      navigator.clipboard.writeText(this.link.item.full_link);
+    }
+  }
+
+  public getLink(): Link {
+    if (this.link) {
+      return this.link.item;
+    }
+    throw new Error('Link is not provided');
+  }
+
+  public getLinkId(): UID<Link>['id'] {
+    if (this.link) {
+      return this.link.id;
+    }
+    throw new Error('Link ID is not provided');
   }
 
   public editLink(): void {

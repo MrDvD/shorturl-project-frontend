@@ -8,7 +8,7 @@
   class="icon-button"
   size="m"
   [tuiDropdown]="dropdown"
-  [(tuiDropdownOpen)]="open"
+  [(tuiDropdownOpen)]="isSortOpened"
 >
   <img src="svg/sort.svg" alt="Sort by" />
   Дата
@@ -21,10 +21,8 @@
     </tui-opt-group>
   </tui-data-list>
 </ng-template>
-<app-link-info-component
-  name="Wow"
-  description="Shortened link"
-  url="http://shortened-link.com/12345"
-  creationDate="some creation"
-  lastUpdatedDate="some update"
-></app-link-info-component>
+@if (links$ | async; as links) { @for (link of links; track link.id) {
+<app-link-info-component [link]="link"></app-link-info-component>
+} } @else {
+<p>Ссылок нет</p>
+}

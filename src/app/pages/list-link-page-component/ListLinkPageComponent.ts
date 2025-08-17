@@ -4,6 +4,7 @@ import { LinkInfoComponent } from '../../components/link-info/LinkInfoComponent'
 import { ActivatedRoute } from '@angular/router';
 import { ToServicesComponent } from '../../components/to-services/ToServicesComponent';
 import { TuiButton, TuiDataList, TuiDropdown } from '@taiga-ui/core';
+import { ServiceToken } from '../../services/tokens';
 
 @Component({
   selector: 'app-list-link-page-component',
@@ -22,5 +23,7 @@ import { TuiButton, TuiDataList, TuiDropdown } from '@taiga-ui/core';
 export class ListLinkPageComponent {
   protected route = inject(ActivatedRoute);
   protected title = this.route.snapshot.data['title'];
-  protected open = false;
+  protected isSortOpened = false;
+  private linksService = inject(ServiceToken.LINK_SERVICE);
+  protected links$ = this.linksService.readAll();
 }

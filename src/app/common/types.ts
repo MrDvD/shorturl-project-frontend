@@ -18,8 +18,15 @@ export type Link = {
   type: LinkType;
   short_id?: string;
   has_expire: boolean;
-  expire: Date;
+  expire?: Date;
   has_metadata: boolean;
   name?: string;
   description?: string;
+  create_date: Date;
+  update_date?: Date;
+  owner: User['login'];
 };
+
+export function hasExpire(link: Link): link is Link & { expire: Date } {
+  return link.has_expire && link.expire !== undefined;
+}
