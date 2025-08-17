@@ -50,6 +50,7 @@ export class LinkFormComponent {
   protected username = '?';
   protected linkForm = new LinkForm();
   protected resultLink = new FormControl<string | null>('some-result-link');
+  protected formAppearance = 'floating';
   protected isSent = false;
 
   public sendForm(): void {
@@ -59,6 +60,10 @@ export class LinkFormComponent {
     } else {
       this.linkForm.markAllAsTouched();
     }
+  }
+
+  public getLinkForm(): LinkForm {
+    return this.linkForm;
   }
 
   public newForm(): void {
@@ -71,5 +76,9 @@ export class LinkFormComponent {
     if (link) {
       navigator.clipboard.writeText(link);
     }
+  }
+
+  public setAppearance(value: string): void {
+    this.formAppearance = value;
   }
 }

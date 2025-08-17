@@ -1,0 +1,61 @@
+<div tuiCardLarge tuiAppearance="outline" class="link-info-card">
+  <header class="link-info-header">
+    <h4>{{ name }}</h4>
+    <button
+      class="menu-button"
+      tuiButton
+      appearance="flat"
+      size="s"
+      [tuiDropdown]="dropdown"
+      [(tuiDropdownOpen)]="isMenuOpened"
+    >
+      <img src="svg/menu.svg" alt="Menu" />
+    </button>
+  </header>
+  @if (description) {
+  <p>{{ description }}</p>
+  }
+  <footer class="link-info-footer">
+    <tui-textfield class="wide" tuiTextfieldSize="s">
+      <input type="text" [readOnly]="true" tuiTextfield value="{{ url }}" />
+    </tui-textfield>
+    <button
+      tuiButton
+      appearance="flat"
+      size="s"
+      type="button"
+      (click)="copyLink()"
+    >
+      <img src="svg/copy.svg" alt="Copy" />
+    </button>
+    <button tuiButton appearance="flat" size="s" type="button">
+      <img src="svg/view.svg" alt="View" />
+    </button>
+  </footer>
+</div>
+<ng-template #dropdown>
+  <tui-data-list size="s">
+    <tui-opt-group>
+      <button tuiOption type="button" (click)="editLink()">
+        Редактировать
+      </button>
+      <a href="" tuiOption> Статистика </a>
+      <button tuiOption type="button">Удалить</button>
+    </tui-opt-group>
+    <tui-opt-group>
+      <div tuiOption ignore-selection>
+        <b>Создано</b>
+        <p>{{ creationDate }}</p>
+      </div>
+      @if (lastUpdatedDate) {
+      <div tuiOption ignore-selection>
+        <b>Изменено</b>
+        <p>{{ lastUpdatedDate }}</p>
+      </div>
+      }
+    </tui-opt-group>
+  </tui-data-list>
+</ng-template>
+<ng-template [(tuiDialog)]="isEditOpened">
+  <app-link-form-component appEditLinkForm></app-link-form-component>
+</ng-template>

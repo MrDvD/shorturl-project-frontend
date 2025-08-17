@@ -1,0 +1,30 @@
+<app-to-services-component
+  [title]="title"
+  redirectUrl="/"
+></app-to-services-component>
+<button
+  tuiButton
+  appearance="outline"
+  class="icon-button"
+  size="m"
+  [tuiDropdown]="dropdown"
+  [(tuiDropdownOpen)]="open"
+>
+  <img src="svg/sort.svg" alt="Sort by" />
+  Дата
+</button>
+<ng-template #dropdown>
+  <tui-data-list size="s">
+    <tui-opt-group>
+      <button tuiOption type="button">По возрастанию</button>
+      <button tuiOption type="button">По убыванию</button>
+    </tui-opt-group>
+  </tui-data-list>
+</ng-template>
+<app-link-info-component
+  name="Wow"
+  description="Shortened link"
+  url="http://shortened-link.com/12345"
+  creationDate="some creation"
+  lastUpdatedDate="some update"
+></app-link-info-component>
