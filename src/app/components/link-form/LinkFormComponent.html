@@ -9,7 +9,12 @@
   <div class="inline-group">
     <tui-textfield class="wide">
       <label tuiLabel htmlFor="full_link">Вставьте ссылку</label>
-      <input formControlName="full_link" tuiTextfield />
+      <input
+        formControlName="full_link"
+        tuiTextfield
+        appTakeValidators
+        [validatorsMap]="linkForm.getValidators()"
+      />
     </tui-textfield>
     <button tuiButton appearance="primary" type="submit" class="submit-button">
       <img src="svg/right-arrow.svg" alt="Send" />
@@ -26,11 +31,25 @@
     <div tuiGroup class="wide">
       <label tuiBlock>
         сокращенная
-        <input type="radio" tuiBlock value="short" formControlName="type" />
+        <input
+          type="radio"
+          tuiBlock
+          value="short"
+          formControlName="type"
+          appTakeValidators
+          [validatorsMap]="linkForm.getValidators()"
+        />
       </label>
       <label tuiBlock>
         именованная
-        <input type="radio" tuiBlock value="named" formControlName="type" />
+        <input
+          type="radio"
+          tuiBlock
+          value="named"
+          formControlName="type"
+          appTakeValidators
+          [validatorsMap]="linkForm.getValidators()"
+        />
       </label>
     </div>
   </div>
@@ -48,7 +67,8 @@
           formControlName="short_id"
           placeholder="link"
           tuiTextfield
-          [appIgnoreDisabledValidators]="linkForm.getType().value !== 'named'"
+          appTakeValidators
+          [validatorsMap]="linkForm.getValidators()"
         />
       </tui-textfield>
     </label>
@@ -69,6 +89,8 @@
           tuiBlock
           [value]="false"
           formControlName="has_expire"
+          appTakeValidators
+          [validatorsMap]="linkForm.getValidators()"
         />
       </label>
       <label tuiBlock>
@@ -78,6 +100,8 @@
           tuiBlock
           [value]="true"
           formControlName="has_expire"
+          appTakeValidators
+          [validatorsMap]="linkForm.getValidators()"
         />
       </label>
     </div>
@@ -94,7 +118,8 @@
       <input
         tuiInputDateTime
         formControlName="expire"
-        [appIgnoreDisabledValidators]="!linkForm.getHasExpire().value"
+        appTakeValidators
+        [validatorsMap]="linkForm.getValidators()"
       />
       <tui-calendar *tuiTextfieldDropdown />
     </tui-textfield>
@@ -110,6 +135,8 @@
       tuiCheckbox
       type="checkbox"
       formControlName="has_metadata"
+      appTakeValidators
+      [validatorsMap]="linkForm.getValidators()"
     />
     Добавить метаданные
   </label>
@@ -119,7 +146,8 @@
     <input
       formControlName="name"
       tuiTextfield
-      [appIgnoreDisabledValidators]="!linkForm.getHasMetadata().value"
+      appTakeValidators
+      [validatorsMap]="linkForm.getValidators()"
     />
   </tui-textfield>
   <tui-error
@@ -131,7 +159,8 @@
     <textarea
       formControlName="description"
       tuiTextarea
-      [appIgnoreDisabledValidators]="!linkForm.getHasMetadata().value"
+      appTakeValidators
+      [validatorsMap]="linkForm.getValidators()"
     ></textarea>
   </tui-textfield>
   <tui-error
@@ -141,8 +170,8 @@
   } }
 </form>
 } @else {
-<form tuiForm="l" class="link-form" tuiAppearance="floating">
-  <div class="form-oneline">
+<form tuiForm="l" class="app-form link" tuiAppearance="floating">
+  <div class="inline-group">
     <tui-textfield class="wide">
       <label htmlFor="resultLink">Скопируйте результат</label>
       <input tuiTextfield [formControl]="resultLink" [readOnly]="true" />
@@ -157,7 +186,7 @@
       <img src="svg/copy.svg" alt="Copy" />
     </button>
   </div>
-  <div class="form-oneline">
+  <div class="inline-group">
     <button tuiButton appearance="secondary" class="wide" (click)="newForm()">
       Создать новую ссылку
     </button>
