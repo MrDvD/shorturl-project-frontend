@@ -3,10 +3,10 @@
   tuiForm="l"
   [formGroup]="linkForm"
   [tuiAppearance]="formAppearance"
-  class="link-form"
+  class="app-form link"
   (ngSubmit)="sendForm()"
 >
-  <div class="form-oneline">
+  <div class="inline-group">
     <tui-textfield class="wide">
       <label tuiLabel htmlFor="full_link">Вставьте ссылку</label>
       <input formControlName="full_link" tuiTextfield />
@@ -21,7 +21,7 @@
   ></tui-error>
 
   @if (linkForm.getFullLink().value) {
-  <div class="form-oneline">
+  <div class="inline-group">
     <p>Тип ссылки:</p>
     <div tuiGroup class="wide">
       <label tuiBlock>
@@ -40,7 +40,7 @@
   ></tui-error>
 
   @if (linkForm.getType().value === 'named') {
-  <div class="form-oneline">
+  <div class="inline-group">
     <p>http://mydomain.ru/{{ username }}/</p>
     <label class="wide">
       <tui-textfield>
@@ -59,7 +59,7 @@
   ></tui-error>
   }
 
-  <div class="form-oneline">
+  <div class="inline-group">
     <p>Срок жизни:</p>
     <div tuiGroup class="wide">
       <label tuiBlock>
@@ -88,7 +88,7 @@
   ></tui-error>
 
   @if (linkForm.getHasExpire().value) {
-  <div class="form-oneline">
+  <div class="inline-group">
     <p>До:</p>
     <tui-textfield class="wide">
       <input
@@ -104,7 +104,7 @@
     [error]="[] | tuiFieldError | async"
   ></tui-error>
   }
-  <label class="checkbox-label">
+  <label class="inline-group">
     <input
       size="m"
       tuiCheckbox

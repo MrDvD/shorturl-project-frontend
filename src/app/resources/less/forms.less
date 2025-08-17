@@ -1,0 +1,31 @@
+// general
+.app-form {
+  --form-padding: 25px;
+  --form-border-radius: 20px;
+  --form-max-width: 400px;
+
+  margin: auto;
+  flex: 1 1 var(--form-max-width);
+  max-width: var(--form-max-width);
+  padding: var(--form-padding);
+  border-radius: var(--form-border-radius);
+
+  .form-header {
+    display: flex;
+    justify-content: center;
+    user-select: none;
+  }
+
+  &.inner {
+    --form-padding: 0;
+    --form-border-radius: 0;
+  }
+}
+
+// semantic classes
+.app-form {
+  &.link {
+    --form-max-width: 500px;
+    margin-top: 0;
+  }
+}

@@ -3,6 +3,7 @@ import { EnterPageComponent } from './pages/enter-page-component/EnterPageCompon
 import { GenerateLinkPageComponent } from './pages/generate-link-page-component/GenerateLinkPageComponent';
 import { ListLinkPageComponent } from './pages/list-link-page-component/ListLinkPageComponent';
 import { ServicesPageComponent } from './pages/services-page-component/ServicesPageComponent';
+import { AccountPageComponent } from './pages/account-page-component/AccountPageComponent';
 
 export const appRoutes: Route[] = [
   {
@@ -24,6 +25,11 @@ export const appRoutes: Route[] = [
     path: 'list-url',
     component: ListLinkPageComponent,
     data: { title: 'Мои ссылки' },
+  },
+  {
+    path: 'account',
+    component: AccountPageComponent,
+    data: { title: 'Мой аккаунт' },
   },
   {
     path: '',
