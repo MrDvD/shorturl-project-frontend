@@ -19,6 +19,7 @@ export class TakeValidators implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.ngControl?.control) {
+      this.ngControl.control.reset();
       this.ngControl.control.clearValidators();
       this.ngControl.control.updateValueAndValidity();
     }

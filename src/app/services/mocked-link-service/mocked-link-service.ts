@@ -1,8 +1,8 @@
 import { Link, UID, User } from '../../common/types';
-import { MassCrudWorker } from '../interfaces';
+import { ReadableRepository } from '../interfaces';
 import { Observable, of } from 'rxjs';
 
-export class MockedLinkService implements MassCrudWorker<Link> {
+export class MockedLinkService implements ReadableRepository<Link> {
   private readonly login: User['login'];
 
   constructor(login: User['login']) {

@@ -27,6 +27,4 @@ export type Link = {
   owner: User['login'];
 };
 
-export function hasExpire(link: Link): link is Link & { expire: Date } {
-  return link.has_expire && link.expire !== undefined;
-}
+export type Response = object;

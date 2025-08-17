@@ -25,7 +25,7 @@
     [error]="[] | tuiFieldError | async"
   ></tui-error>
 
-  @if (linkForm.getFullLink().value) {
+  @if (linkForm.getFullLink().valid) {
   <div class="inline-group">
     <p>Тип ссылки:</p>
     <div tuiGroup class="wide">

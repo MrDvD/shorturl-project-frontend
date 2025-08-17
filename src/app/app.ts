@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { ServiceToken } from './services/tokens';
 import { MockedLinkService } from './services/mocked-link-service/mocked-link-service';
 import { DomainProvider } from './services/domain-provider/domain-provider';
+import { MockedUserService } from './services/mocked-user-service/mocked-user-service';
 
 @Component({
   imports: [RouterModule, TuiButton, TuiRoot],
@@ -18,6 +19,10 @@ import { DomainProvider } from './services/domain-provider/domain-provider';
       useFactory: () => {
         return new MockedLinkService('testUser');
       },
+    },
+    {
+      provide: ServiceToken.USER_SERVICE,
+      useClass: MockedUserService,
     },
     {
       provide: DomainProvider,

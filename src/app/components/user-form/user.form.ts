@@ -1,5 +1,6 @@
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Optional, User } from '../../common/types';
+import { FormValidator } from '../../common/formValidators';
 
 export type UserFormMode = 'login' | 'register';
 
@@ -15,11 +16,11 @@ export class UserForm extends FormGroup {
     } = {
       login: new FormControl<User['login'] | null>(null, {
         nonNullable: true,
-        validators: [Validators.required, Validators.minLength(3)],
+        validators: [FormValidator.required, FormValidator.minLength(3)],
       }),
       password: new FormControl<User['password'] | null>(null, {
         nonNullable: true,
-        validators: [Validators.required, Validators.minLength(6)],
+        validators: [FormValidator.required, FormValidator.minLength(6)],
       }),
     };
     if (mode === 'register') {
@@ -27,11 +28,14 @@ export class UserForm extends FormGroup {
         ...controls,
         confirmPassword: new FormControl<User['password'] | null>(null, {
           nonNullable: true,
-          validators: [Validators.required, Validators.minLength(6)],
+          validators: [
+            FormValidator.required,
+            FormValidator.isEqual(controls.password),
+          ],
         }),
         email: new FormControl<User['email'] | null>(null, {
           nonNullable: true,
-          validators: [Validators.required, Validators.email],
+          validators: [FormValidator.isEmail, FormValidator.required],
         }),
       };
     }
