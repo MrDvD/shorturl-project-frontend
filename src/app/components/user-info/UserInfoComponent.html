@@ -15,15 +15,42 @@
       class="icon-button"
       (click)="editEmail()"
     >
+      @if (isEditingEmail) {
+      <img src="svg/check.svg" alt="Save" />
+      } @else {
       <img src="svg/pen.svg" alt="Edit" />
+      }
     </button>
   </div>
+  <tui-error
+    [formControl]="email"
+    [error]="[] | tuiFieldError | async"
+  ></tui-error>
   <div class="inline-group">
     <button tuiButton appearance="primary" class="wide" type="button">
       Смена пароля
     </button>
-    <button tuiButton appearance="accent" class="wide" type="button">
+    <button
+      tuiButton
+      appearance="accent"
+      class="wide"
+      type="button"
+      (click)="openRemoveDialog()"
+    >
       Удалить аккаунт
     </button>
   </div>
 </form>
+<ng-template [(tuiDialog)]="isRemoveOpened">
+  <div class="centered-dialog">
+    <button
+      tuiButton
+      appearance="accent"
+      class="wide"
+      type="button"
+      (click)="removeUser()"
+    >
+      Подтверждаю удаление аккаунта
+    </button>
+  </div>
+</ng-template>

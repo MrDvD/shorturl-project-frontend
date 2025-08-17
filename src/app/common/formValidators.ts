@@ -2,7 +2,9 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 export class FormValidator {
   public static required(field: AbstractControl): ValidationErrors | null {
-    return field.value !== undefined && field.value !== null
+    return field.value !== undefined &&
+      field.value !== null &&
+      field.value !== ''
       ? null
       : {
           other: 'Заполните это поле',
