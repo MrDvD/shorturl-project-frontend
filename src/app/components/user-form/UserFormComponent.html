@@ -1,10 +1,11 @@
 <form
   tuiForm="l"
   [formGroup]="userForm"
-  class="user-form"
+  class="app-form"
+  tuiAppearance="floating"
   (ngSubmit)="sendForm()"
 >
-  <header class="user-form-header">
+  <header class="form-header">
     <b>{{ userForm.getTitle() }}</b>
   </header>
 
@@ -16,6 +17,16 @@
     formControlName="login"
     [error]="[] | tuiFieldError | async"
   ></tui-error>
+  @if ( userFormMode === 'register' ) {
+  <tui-textfield>
+    <label tuiLabel htmlFor="email">Email</label>
+    <input formControlName="email" tuiTextfield />
+  </tui-textfield>
+  <tui-error
+    formControlName="email"
+    [error]="[] | tuiFieldError | async"
+  ></tui-error>
+  }
 
   <tui-textfield>
     <label tuiLabel htmlFor="password">Пароль</label>
@@ -35,19 +46,27 @@
     [error]="[] | tuiFieldError | async"
   ></tui-error>
   }
-  <div class="button-group">
+  <div class="inline-group wrap-reverse">
     @switch (userFormMode) { @case ('login') {
-    <a tuiButton appearence="secondary" class="enter-button" href="/register"
+    <a
+      tuiButton
+      appearance="secondary"
+      class="paired-button"
+      routerLink="/register"
       >Регистрация</a
     >
-    <button tuiButton appearence="primary" type="submit" class="enter-button">
+    <button tuiButton appearance="primary" type="submit" class="paired-button">
       Вход
     </button>
     } @case ('register') {
-    <a tuiButton appearence="secondary" class="enter-button" href="/login"
+    <a
+      tuiButton
+      appearance="secondary"
+      class="paired-button"
+      routerLink="/login"
       >Вход</a
     >
-    <button tuiButton appearence="primary" type="submit" class="enter-button">
+    <button tuiButton appearance="primary" type="submit" class="paired-button">
       Регистрация
     </button>
     } }

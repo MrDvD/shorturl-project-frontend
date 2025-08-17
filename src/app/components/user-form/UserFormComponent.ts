@@ -1,10 +1,16 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TuiForm } from '@taiga-ui/layout';
-import { TuiTextfield, TuiButton, TuiError } from '@taiga-ui/core';
+import {
+  TuiTextfield,
+  TuiButton,
+  TuiError,
+  TuiAppearance,
+} from '@taiga-ui/core';
 import { UserForm, UserFormMode } from './user.form';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TuiFieldErrorPipe } from '@taiga-ui/kit';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-user-form-component',
@@ -16,6 +22,8 @@ import { TuiFieldErrorPipe } from '@taiga-ui/kit';
     TuiButton,
     TuiError,
     TuiFieldErrorPipe,
+    RouterLink,
+    TuiAppearance,
   ],
   templateUrl: './UserFormComponent.html',
   styleUrl: './UserFormComponent.less',
