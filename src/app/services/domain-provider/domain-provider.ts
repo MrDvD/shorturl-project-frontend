@@ -9,4 +9,8 @@ export class DomainProvider {
       this.document.location.protocol + '//' + this.document.location.hostname
     );
   }
+
+  public getApiDomain(): string {
+    return 'http://localhost:3000';
+  }
 }

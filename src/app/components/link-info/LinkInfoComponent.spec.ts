@@ -3,8 +3,8 @@ import { LinkInfoComponent } from './LinkInfoComponent';
 import { MockedLinkService } from '../../services/mocked-link-service/mocked-link-service';
 import { ServiceToken } from '../../services/tokens';
 import { AuthProvider } from '../../services/auth-provider/auth-provider';
-import { MockedUserService } from '../../services/mocked-user-service/mocked-user-service';
 import { DomainProvider } from '../../services/domain-provider/domain-provider';
+import { ApiUserService } from '../../services/api-user-service/api-user-service';
 
 describe('LinkInfoComponent', () => {
   let component: LinkInfoComponent;
@@ -20,7 +20,7 @@ describe('LinkInfoComponent', () => {
         },
         {
           provide: ServiceToken.USER_SERVICE,
-          useClass: MockedUserService,
+          useClass: ApiUserService,
         },
         AuthProvider,
         DomainProvider,

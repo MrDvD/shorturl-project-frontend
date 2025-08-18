@@ -4,21 +4,36 @@ import { GenerateLinkPageComponent } from './pages/generate-link-page-component/
 import { ListLinkPageComponent } from './pages/list-link-page-component/ListLinkPageComponent';
 import { ServicesPageComponent } from './pages/services-page-component/ServicesPageComponent';
 import { AccountPageComponent } from './pages/account-page-component/AccountPageComponent';
-import { canActivateUserRouteGuard } from './services/auth-provider/guards';
+import {
+  canActivateGuestRouteGuard,
+  canActivateUserRouteGuard,
+} from './services/auth-provider/guards';
 import { AuthProvider } from './services/auth-provider/auth-provider';
-import { ServiceToken } from './services/tokens';
-import { MockedUserService } from './services/mocked-user-service/mocked-user-service';
 
 export const appRoutes: Route[] = [
   {
     path: 'login',
     component: EnterPageComponent,
+    canActivate: [canActivateGuestRouteGuard],
     data: { mode: 'login' },
+    providers: [
+      {
+        provide: AuthProvider,
+        useClass: AuthProvider,
+      },
+    ],
   },
   {
     path: 'register',
     component: EnterPageComponent,
+    canActivate: [canActivateGuestRouteGuard],
     data: { mode: 'register' },
+    providers: [
+      {
+        provide: AuthProvider,
+        useClass: AuthProvider,
+      },
+    ],
   },
   {
     path: 'generate-url',
@@ -32,10 +47,6 @@ export const appRoutes: Route[] = [
       {
         provide: AuthProvider,
         useClass: AuthProvider,
-      },
-      {
-        provide: ServiceToken.USER_SERVICE,
-        useClass: MockedUserService,
       },
     ],
     children: [

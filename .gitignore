@@ -44,3 +44,8 @@ Thumbs.db
 .github/instructions/nx.instructions.md
 
 .angular
+
+# my
+backend/node_modules
+backend/dist
+backend/postgresql

@@ -11,6 +11,13 @@ export type User = {
   password: string;
 };
 
+export type RawUser = {
+  user_id: number;
+  login: string;
+  email: string;
+  password: string;
+};
+
 export type LinkType = 'short' | 'named';
 
 export type Link = {

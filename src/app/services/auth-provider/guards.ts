@@ -19,3 +19,14 @@ export const canActivateUserRouteGuard: CanActivateFn = (
   }
   return router.parseUrl('/login');
 };
+
+export const canActivateGuestRouteGuard: CanActivateFn = () => {
+  const authProvider = inject(AuthProvider);
+  const router = inject(Router);
+
+  const user = authProvider.getCurrentUser();
+  if (user === null) {
+    return true;
+  }
+  return router.parseUrl('/');
+};

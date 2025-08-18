@@ -5,7 +5,7 @@ import {
   ValidatorFn,
 } from '@angular/forms';
 import { Link, Optional } from '../../common/types';
-import { FormValidator } from '../../common/formValidators';
+import { FormValidator } from '../formValidators';
 
 export class LinkForm extends FormGroup {
   constructor() {

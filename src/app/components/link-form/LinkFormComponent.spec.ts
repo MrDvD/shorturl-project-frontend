@@ -4,7 +4,7 @@ import { ServiceToken } from '../../services/tokens';
 import { MockedLinkService } from '../../services/mocked-link-service/mocked-link-service';
 import { DomainProvider } from '../../services/domain-provider/domain-provider';
 import { AuthProvider } from '../../services/auth-provider/auth-provider';
-import { MockedUserService } from '../../services/mocked-user-service/mocked-user-service';
+import { ApiUserService } from '../../services/api-user-service/api-user-service';
 
 describe('LinkFormComponent', () => {
   let component: LinkFormComponent;
@@ -20,7 +20,7 @@ describe('LinkFormComponent', () => {
         },
         {
           provide: ServiceToken.USER_SERVICE,
-          useClass: MockedUserService,
+          useClass: ApiUserService,
         },
         DomainProvider,
         AuthProvider,

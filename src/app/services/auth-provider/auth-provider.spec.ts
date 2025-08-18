@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
 import { AuthProvider } from './auth-provider';
-import { MockedUserService } from '../mocked-user-service/mocked-user-service';
 import { ServiceToken } from '../tokens';
+import { ApiUserService } from '../api-user-service/api-user-service';
 
 describe('AuthProvider', () => {
   let service: AuthProvider;
@@ -11,7 +11,7 @@ describe('AuthProvider', () => {
     TestBed.configureTestingModule({
       providers: [
         AuthProvider,
-        { provide: ServiceToken.USER_SERVICE, useClass: MockedUserService },
+        { provide: ServiceToken.USER_SERVICE, useClass: ApiUserService },
       ],
     });
     service = TestBed.inject(AuthProvider);

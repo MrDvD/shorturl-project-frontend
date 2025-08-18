@@ -1,19 +1,37 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Optional, UID, User } from '../../common/types';
-import { ServiceToken } from '../tokens';
 
 @Injectable()
 export class AuthProvider {
-  private readonly userService = inject(ServiceToken.USER_SERVICE);
+  private static currentUser: Optional<UID<Omit<User, 'password'>>> = null;
+
+  private saveToLocalStorage(): void {
+    localStorage.setItem(
+      'currentUser',
+      JSON.stringify(AuthProvider.currentUser)
+    );
+  }
+
+  private loadFromLocalStorage(): void {
+    const user = localStorage.getItem('currentUser');
+    if (user) {
+      this.setCurrentUser(JSON.parse(user) as UID<Omit<User, 'password'>>);
+    }
+  }
+
+  public clear(): void {
+    localStorage.removeItem('currentUser');
+    AuthProvider.currentUser = null;
+    window.location.href = '/';
+  }
+
+  public setCurrentUser(user: UID<Omit<User, 'password'>>): void {
+    AuthProvider.currentUser = user;
+    this.saveToLocalStorage();
+  }
 
   public getCurrentUser(): Optional<UID<Omit<User, 'password'>>> {
-    return null;
-    return {
-      id: 1,
-      item: {
-        login: 'testUser',
-        email: 'test@example.com',
-      },
-    };
+    this.loadFromLocalStorage();
+    return AuthProvider.currentUser;
   }
 }

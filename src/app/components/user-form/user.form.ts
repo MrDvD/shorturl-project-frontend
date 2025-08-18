@@ -1,6 +1,6 @@
 import { FormControl, FormGroup } from '@angular/forms';
 import { Optional, User } from '../../common/types';
-import { FormValidator } from '../../common/formValidators';
+import { FormValidator } from '../formValidators';
 
 export type UserFormMode = 'login' | 'register';
 
