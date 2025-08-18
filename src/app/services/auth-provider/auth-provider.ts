@@ -7,6 +7,7 @@ export class AuthProvider {
   private readonly userService = inject(ServiceToken.USER_SERVICE);
 
   public getCurrentUser(): Optional<UID<Omit<User, 'password'>>> {
+    return null;
     return {
       id: 1,
       item: {

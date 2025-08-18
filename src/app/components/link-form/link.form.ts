@@ -62,6 +62,14 @@ export class LinkForm extends FormGroup {
     throw new Error('Has expire control is not defined');
   }
 
+  public getExpire(): AbstractControl {
+    const expire = this.get('expire');
+    if (expire) {
+      return expire;
+    }
+    throw new Error('Expire control is not defined');
+  }
+
   public getHasMetadata(): AbstractControl {
     const hasMetadata = this.get('has_metadata');
     if (hasMetadata) {

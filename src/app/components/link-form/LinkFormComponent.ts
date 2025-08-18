@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   TuiAppearance,
@@ -18,7 +23,6 @@ import {
 } from '@taiga-ui/kit';
 import { LinkForm } from './link.form';
 import { TuiForm } from '@taiga-ui/layout';
-import { TuiDay, TuiTime } from '@taiga-ui/cdk/date-time';
 import { ServiceToken } from '../../services/tokens';
 import { take } from 'rxjs';
 import { FormatLinkPipe } from '../../pipes/format-link/FormatLink-pipe';
@@ -51,8 +55,7 @@ import { DomainProvider } from '../../services/domain-provider/domain-provider';
   styleUrl: './LinkFormComponent.less',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LinkFormComponent {
-  protected value: [TuiDay, TuiTime | null] | null = null;
+export class LinkFormComponent implements OnInit {
   protected linkForm = new LinkForm();
   protected resultLink = new FormControl<string | null>('');
   protected formAppearance = 'floating';
@@ -62,6 +65,10 @@ export class LinkFormComponent {
   private readonly formatLink = new FormatLinkPipe();
   protected readonly domain = inject(DomainProvider).getDomain();
   protected isSent = false;
+
+  ngOnInit(): void {
+    this.newForm();
+  }
 
   public getUser(): UID<Omit<User, 'password'>> {
     if (this.user) {
@@ -95,7 +102,20 @@ export class LinkFormComponent {
   }
 
   public newForm(): void {
-    this.linkForm.reset();
+    if (this.user) {
+      this.linkForm.reset();
+    } else {
+      const nextMonth = new Date();
+      nextMonth.setMonth(nextMonth.getMonth() + 1);
+      this.linkForm.getType().disable();
+      this.linkForm.getHasExpire().disable();
+      // this.linkForm.getExpire().disable();
+      this.linkForm.patchValue({
+        type: 'short',
+        has_expire: true,
+        // expire: TuiDay.fromLocalNativeDate(nextMonth),
+      });
+    }
     this.isSent = false;
   }
 
