@@ -2,12 +2,24 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  inject,
   ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TuiAppearance, TuiButton, TuiTextfield } from '@taiga-ui/core';
+import {
+  TuiAppearance,
+  TuiButton,
+  TuiDialog,
+  TuiError,
+  TuiTextfield,
+} from '@taiga-ui/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TuiForm } from '@taiga-ui/layout';
+import { ServiceToken } from '../../services/tokens';
+import { FormValidator } from '../../common/formValidators';
+import { TuiFieldErrorPipe } from '@taiga-ui/kit';
+import { UID, User } from '../../common/types';
+import { AuthProvider } from '../../services/auth-provider/auth-provider';
 
 @Component({
   selector: 'app-user-info-component',
@@ -18,6 +30,9 @@ import { TuiForm } from '@taiga-ui/layout';
     TuiForm,
     TuiAppearance,
     TuiButton,
+    TuiDialog,
+    TuiError,
+    TuiFieldErrorPipe,
   ],
   templateUrl: './UserInfoComponent.html',
   styleUrl: './UserInfoComponent.less',
@@ -26,14 +41,81 @@ import { TuiForm } from '@taiga-ui/layout';
 export class UserInfoComponent {
   @ViewChild('emailInput') emailInput: ElementRef<HTMLInputElement> | null =
     null;
-  protected email = new FormControl<string | null>({
-    value: 'me@ya.ru',
-    disabled: true,
-  });
-  protected login = 'testUser';
+  private userService = inject(ServiceToken.USER_SERVICE);
+  private authProvider = inject(AuthProvider);
+  private user: UID<Omit<User, 'password'>> | null = null;
+  protected email = new FormControl<string | null>(
+    {
+      value: null,
+      disabled: true,
+    },
+    [FormValidator.isEmail, FormValidator.required]
+  );
+  protected isRemoveOpened = false;
+  protected previousEmail: string | null = null;
+  protected isEditingEmail = false;
+
+  constructor() {
+    const user = this.authProvider.getCurrentUser();
+    if (user) {
+      this.user = user;
+      if (user.item.email) {
+        this.email.setValue(user.item.email);
+      }
+    }
+  }
+
+  public getUser(): UID<Omit<User, 'password'>> {
+    if (this.user) {
+      return this.user;
+    }
+    throw new Error('User not found');
+  }
+
+  public resetEmail(): void {
+    this.email.disable();
+    this.email.setValue(this.previousEmail);
+    this.isEditingEmail = false;
+  }
 
   public editEmail(): void {
-    this.email.enable();
-    this.emailInput?.nativeElement.focus();
+    if (this.isEditingEmail) {
+      this.updateEmail();
+    } else {
+      this.previousEmail = this.email.value;
+      this.email.enable();
+      this.emailInput?.nativeElement.focus();
+      this.isEditingEmail = true;
+    }
+  }
+
+  public updateEmail(): void {
+    if (this.email.valid) {
+      // this.userService.update(null)
+      console.log('Email updated:', this.email.value);
+      this.previousEmail = this.email.value;
+      this.resetEmail();
+    } else {
+      this.email.markAsTouched();
+    }
+  }
+
+  public openRemoveDialog(): void {
+    this.isRemoveOpened = true;
+  }
+
+  public removeUser(): void {
+    if (this.user) {
+      this.userService.delete(this.user.id).subscribe({
+        complete: () => {
+          console.log('User removed successfully');
+          this.isRemoveOpened = false;
+        },
+        error: (error) => {
+          console.error('Error removing user', error);
+        },
+      });
+    }
+    throw new Error('User is not provided');
   }
 }

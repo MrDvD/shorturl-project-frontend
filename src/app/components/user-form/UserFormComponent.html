@@ -30,7 +30,7 @@
 
   <tui-textfield>
     <label tuiLabel htmlFor="password">Пароль</label>
-    <input formControlName="password" tuiTextfield />
+    <input formControlName="password" tuiTextfield type="password" />
   </tui-textfield>
   <tui-error
     formControlName="password"
@@ -39,7 +39,7 @@
   @if ( userFormMode === 'register' ) {
   <tui-textfield>
     <label tuiLabel htmlFor="confirmPassword">Повторите пароль</label>
-    <input formControlName="confirmPassword" tuiTextfield />
+    <input formControlName="confirmPassword" tuiTextfield type="password" />
   </tui-textfield>
   <tui-error
     formControlName="confirmPassword"

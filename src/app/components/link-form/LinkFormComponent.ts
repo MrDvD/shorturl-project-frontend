@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   TuiAppearance,
@@ -19,7 +19,13 @@ import {
 import { LinkForm } from './link.form';
 import { TuiForm } from '@taiga-ui/layout';
 import { TuiDay, TuiTime } from '@taiga-ui/cdk/date-time';
-import { IgnoreDisabledValidators } from '../../directives/ignore-disabled-validators/IgnoreDisabledValidators';
+import { ServiceToken } from '../../services/tokens';
+import { take } from 'rxjs';
+import { FormatLinkPipe } from '../../pipes/format-link/FormatLink-pipe';
+import { TakeValidators } from '../../directives/take-validators/TakeValidators';
+import { AuthProvider } from '../../services/auth-provider/auth-provider';
+import { UID, User } from '../../common/types';
+import { DomainProvider } from '../../services/domain-provider/domain-provider';
 
 @Component({
   selector: 'app-link-form-component',
@@ -38,8 +44,8 @@ import { IgnoreDisabledValidators } from '../../directives/ignore-disabled-valid
     TuiCheckbox,
     TuiAppearance,
     TuiTextarea,
-    IgnoreDisabledValidators,
     TuiCopy,
+    TakeValidators,
   ],
   templateUrl: './LinkFormComponent.html',
   styleUrl: './LinkFormComponent.less',
@@ -47,16 +53,38 @@ import { IgnoreDisabledValidators } from '../../directives/ignore-disabled-valid
 })
 export class LinkFormComponent {
   protected value: [TuiDay, TuiTime | null] | null = null;
-  protected username = '?';
   protected linkForm = new LinkForm();
-  protected resultLink = new FormControl<string | null>('some-result-link');
+  protected resultLink = new FormControl<string | null>('');
   protected formAppearance = 'floating';
+  private readonly linkService = inject(ServiceToken.LINK_SERVICE);
+  private readonly authProvider = inject(AuthProvider);
+  private readonly user = this.authProvider.getCurrentUser();
+  private readonly formatLink = new FormatLinkPipe();
+  protected readonly domain = inject(DomainProvider).getDomain();
   protected isSent = false;
+
+  public getUser(): UID<Omit<User, 'password'>> {
+    if (this.user) {
+      return this.user;
+    }
+    throw new Error('User not found');
+  }
 
   public sendForm(): void {
     const link = this.linkForm.getLink();
     if (link) {
-      this.isSent = true;
+      this.linkService
+        .create(link)
+        .pipe(take(1))
+        .subscribe({
+          next: (uid) => {
+            this.resultLink.setValue(this.formatLink.transform(uid.item));
+            this.isSent = true;
+          },
+          error: (error) => {
+            console.error('Error creating link:', error);
+          },
+        });
     } else {
       this.linkForm.markAllAsTouched();
     }
