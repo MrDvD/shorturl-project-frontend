@@ -1,5 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserFormComponent } from './UserFormComponent';
+import { ServiceToken } from '../../services/tokens';
+import { MockedUserService } from '../../services/mocked-user-service/mocked-user-service';
+import { RouterModule } from '@angular/router';
 
 describe('UserFormComponent', () => {
   let component: UserFormComponent;
@@ -7,7 +10,13 @@ describe('UserFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UserFormComponent],
+      imports: [UserFormComponent, RouterModule.forRoot([])],
+      providers: [
+        {
+          provide: ServiceToken.USER_SERVICE,
+          useClass: MockedUserService,
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UserFormComponent);

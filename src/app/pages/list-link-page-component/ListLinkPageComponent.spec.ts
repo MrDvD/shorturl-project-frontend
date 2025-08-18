@@ -1,5 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ListLinkPageComponent } from './ListLinkPageComponent';
+import { RouterModule } from '@angular/router';
+import { MockedLinkService } from '../../services/mocked-link-service/mocked-link-service';
+import { ServiceToken } from '../../services/tokens';
+import { DomainProvider } from '../../services/domain-provider/domain-provider';
+import { AuthProvider } from '../../services/auth-provider/auth-provider';
+import { MockedUserService } from '../../services/mocked-user-service/mocked-user-service';
 
 describe('ListLinkPageComponent', () => {
   let component: ListLinkPageComponent;
@@ -7,7 +13,19 @@ describe('ListLinkPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ListLinkPageComponent],
+      imports: [ListLinkPageComponent, RouterModule.forRoot([])],
+      providers: [
+        {
+          provide: ServiceToken.LINK_SERVICE,
+          useClass: MockedLinkService,
+        },
+        {
+          provide: ServiceToken.USER_SERVICE,
+          useClass: MockedUserService,
+        },
+        AuthProvider,
+        DomainProvider,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ListLinkPageComponent);
