@@ -7,7 +7,7 @@ import { formatLink } from './format.util';
   name: 'formatLink',
 })
 export class FormatLinkPipe implements PipeTransform {
-  private domain: string = inject(DomainProvider).getDomain();
+  private domain = inject(DomainProvider).getDomain();
 
   transform(link: Link, includeDomain = true): string {
     if (includeDomain) {
