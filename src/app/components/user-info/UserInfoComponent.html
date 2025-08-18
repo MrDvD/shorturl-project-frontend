@@ -1,7 +1,7 @@
 <form tuiForm="l" tuiAppearance="floating" class="app-form">
   <tui-textfield>
     <label tuiLabel htmlFor="login">Логин</label>
-    <input tuiTextfield [disabled]="true" value="{{ login }}" />
+    <input tuiTextfield [disabled]="true" value="{{ getUser().item.login }}" />
   </tui-textfield>
   <div class="inline-group">
     <tui-textfield class="wide">

@@ -18,6 +18,8 @@ import { TuiForm } from '@taiga-ui/layout';
 import { ServiceToken } from '../../services/tokens';
 import { FormValidator } from '../../common/formValidators';
 import { TuiFieldErrorPipe } from '@taiga-ui/kit';
+import { UID, User } from '../../common/types';
+import { AuthProvider } from '../../services/auth-provider/auth-provider';
 
 @Component({
   selector: 'app-user-info-component',
@@ -40,18 +42,35 @@ export class UserInfoComponent {
   @ViewChild('emailInput') emailInput: ElementRef<HTMLInputElement> | null =
     null;
   private userService = inject(ServiceToken.USER_SERVICE);
+  private authProvider = inject(AuthProvider);
+  private user: UID<Omit<User, 'password'>> | null = null;
   protected email = new FormControl<string | null>(
     {
-      value: 'me@ya.ru',
+      value: null,
       disabled: true,
     },
     [FormValidator.isEmail, FormValidator.required]
   );
-  protected login = 'testUser';
-  protected userId = 1;
   protected isRemoveOpened = false;
   protected previousEmail: string | null = null;
   protected isEditingEmail = false;
+
+  constructor() {
+    const user = this.authProvider.getCurrentUser();
+    if (user) {
+      this.user = user;
+      if (user.item.email) {
+        this.email.setValue(user.item.email);
+      }
+    }
+  }
+
+  public getUser(): UID<Omit<User, 'password'>> {
+    if (this.user) {
+      return this.user;
+    }
+    throw new Error('User not found');
+  }
 
   public resetEmail(): void {
     this.email.disable();
@@ -86,14 +105,17 @@ export class UserInfoComponent {
   }
 
   public removeUser(): void {
-    this.userService.delete(this.userId).subscribe({
-      complete: () => {
-        console.log('User removed successfully');
-        this.isRemoveOpened = false;
-      },
-      error: (error) => {
-        console.error('Error removing user', error);
-      },
-    });
+    if (this.user) {
+      this.userService.delete(this.user.id).subscribe({
+        complete: () => {
+          console.log('User removed successfully');
+          this.isRemoveOpened = false;
+        },
+        error: (error) => {
+          console.error('Error removing user', error);
+        },
+      });
+    }
+    throw new Error('User is not provided');
   }
 }

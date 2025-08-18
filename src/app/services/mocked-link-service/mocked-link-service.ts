@@ -1,12 +1,17 @@
+import { inject, Injectable } from '@angular/core';
 import { Link, UID, User } from '../../common/types';
 import { ReadableRepository } from '../interfaces';
 import { Observable, of } from 'rxjs';
+import { AuthProvider } from '../auth-provider/auth-provider';
 
+@Injectable()
 export class MockedLinkService implements ReadableRepository<Link> {
+  private readonly authProvider = inject(AuthProvider);
   private readonly login: User['login'];
 
-  constructor(login: User['login']) {
-    this.login = login;
+  constructor() {
+    const currentUser = this.authProvider.getCurrentUser();
+    this.login = currentUser ? currentUser.item.login : '?';
   }
 
   create(item: Link): Observable<UID<Link>> {

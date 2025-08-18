@@ -60,7 +60,7 @@
 
   @if (linkForm.getType().value === 'named') {
   <div class="inline-group">
-    <p>http://mydomain.ru/{{ username }}/</p>
+    <p>{{ domain }}/{{ getUser().item.login }}/</p>
     <label class="wide">
       <tui-textfield>
         <input
