@@ -27,4 +27,6 @@ export type Link = {
   owner: User['login'];
 };
 
-export type Response = object;
+export type Response = {
+  user: UID<Omit<User, 'password'>>;
+};

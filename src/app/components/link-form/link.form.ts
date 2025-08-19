@@ -5,7 +5,7 @@ import {
   ValidatorFn,
 } from '@angular/forms';
 import { Link, Optional } from '../../common/types';
-import { FormValidator } from '../../common/formValidators';
+import { FormValidator } from '../formValidators';
 
 export class LinkForm extends FormGroup {
   constructor() {
@@ -60,6 +60,14 @@ export class LinkForm extends FormGroup {
       return hasExpire;
     }
     throw new Error('Has expire control is not defined');
+  }
+
+  public getExpire(): AbstractControl {
+    const expire = this.get('expire');
+    if (expire) {
+      return expire;
+    }
+    throw new Error('Expire control is not defined');
   }
 
   public getHasMetadata(): AbstractControl {

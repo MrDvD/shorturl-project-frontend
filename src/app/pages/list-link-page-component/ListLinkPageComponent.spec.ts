@@ -5,7 +5,7 @@ import { MockedLinkService } from '../../services/mocked-link-service/mocked-lin
 import { ServiceToken } from '../../services/tokens';
 import { DomainProvider } from '../../services/domain-provider/domain-provider';
 import { AuthProvider } from '../../services/auth-provider/auth-provider';
-import { MockedUserService } from '../../services/mocked-user-service/mocked-user-service';
+import { ApiUserService } from '../../services/api-user-service/api-user-service';
 
 describe('ListLinkPageComponent', () => {
   let component: ListLinkPageComponent;
@@ -21,7 +21,7 @@ describe('ListLinkPageComponent', () => {
         },
         {
           provide: ServiceToken.USER_SERVICE,
-          useClass: MockedUserService,
+          useClass: ApiUserService,
         },
         AuthProvider,
         DomainProvider,

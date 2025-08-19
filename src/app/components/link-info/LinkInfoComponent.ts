@@ -67,9 +67,9 @@ export class LinkInfoComponent {
     }
   }
 
-  public getLink(): Link {
+  public getLink(): UID<Link> {
     if (this.link) {
-      return this.link.item;
+      return this.link;
     }
     throw new Error('Link is not provided');
   }

@@ -1,6 +1,6 @@
 <div tuiCardLarge tuiAppearance="outline" class="link-info-card">
   <header class="link-info-header">
-    <h4>{{ getLink().name ?? 'Сокращенная ссылка' }}</h4>
+    <h4>{{ getLink().item.name ?? 'Сокращенная ссылка' }}</h4>
     <button
       class="menu-button"
       tuiButton
@@ -12,8 +12,8 @@
       <img src="svg/menu.svg" alt="Menu" />
     </button>
   </header>
-  @if (getLink().description) {
-  <p>{{ getLink().description }}</p>
+  @if (getLink().item.description) {
+  <p>{{ getLink().item.description }}</p>
   }
   <footer class="link-info-footer">
     <tui-textfield class="wide" tuiTextfieldSize="s">
@@ -21,7 +21,7 @@
         type="text"
         [readOnly]="true"
         tuiTextfield
-        value="{{ getLink() | formatLink }}"
+        value="{{ getLink().item | formatLink }}"
       />
     </tui-textfield>
     <button
@@ -57,9 +57,9 @@
     <tui-opt-group>
       <div tuiOption ignore-selection>
         <b>Создано</b>
-        <p>{{ getLink().create_date | formatDate }}</p>
+        <p>{{ getLink().item.create_date | formatDate }}</p>
       </div>
-      @if (getLink(); as linkObject) { @if (linkObject | wasUpdated) {
+      @if (getLink().item; as linkObject) { @if (linkObject | wasUpdated) {
       <div tuiOption ignore-selection>
         <b>Изменено</b>
         <p>{{ linkObject.update_date | formatDate }}</p>
@@ -71,7 +71,7 @@
 <ng-template [(tuiDialog)]="isEditOpened">
   <app-link-form-component
     appEditLinkForm
-    [linkId]="1"
+    [linkId]="getLink().id"
   ></app-link-form-component>
 </ng-template>
-<ng-template #fullLink> {{ getLink().full_link }} </ng-template>
+<ng-template #fullLink> {{ getLink().item.full_link }} </ng-template>

@@ -13,6 +13,7 @@ import { TuiFieldErrorPipe } from '@taiga-ui/kit';
 import { RouterLink } from '@angular/router';
 import { ServiceToken } from '../../services/tokens';
 import { take } from 'rxjs';
+import { AuthProvider } from '../../services/auth-provider/auth-provider';
 
 @Component({
   selector: 'app-user-form-component',
@@ -32,7 +33,8 @@ import { take } from 'rxjs';
 })
 export class UserFormComponent {
   private _userFormMode: UserFormMode = 'login';
-  private userService = inject(ServiceToken.USER_SERVICE);
+  private readonly userService = inject(ServiceToken.USER_SERVICE);
+  private readonly authProvider = inject(AuthProvider);
 
   @Input({ required: true })
   set userFormMode(value: UserFormMode) {
@@ -49,20 +51,40 @@ export class UserFormComponent {
   protected sendForm(): void {
     const user = this.userForm.getUser();
     if (user) {
-      this.userService
-        .check(user)
-        .pipe(take(1))
-        .subscribe({
-          next: (response) => {
-            console.log(
-              'UserFormComponent: User checked successfully',
-              response
-            );
-          },
-          error: (error) => {
-            console.error('UserFormComponent: Error during user check', error);
-          },
-        });
+      switch (this.userFormMode) {
+        case 'register':
+          this.userService
+            .create(user)
+            .pipe(take(1))
+            .subscribe({
+              next: (newUser) => {
+                this.authProvider.setCurrentUser(newUser);
+                window.location.href = '/';
+              },
+              error: (error) => {
+                console.error(error.message);
+              },
+            });
+          break;
+        case 'login':
+          this.userService
+            .check(user)
+            .pipe(take(1))
+            .subscribe({
+              next: (response) => {
+                const newUser = response.user;
+                this.authProvider.setCurrentUser(newUser);
+                window.location.href = '/';
+              },
+              error: (error) => {
+                console.error(error.message);
+              },
+            });
+          break;
+        default:
+          console.error('UserFormComponent: Unsupported user form mode');
+          return;
+      }
     } else {
       this.userForm.markAllAsTouched();
     }

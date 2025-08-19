@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { AuthProvider } from '../auth-provider/auth-provider';
 
 @Injectable()
-export class MockedLinkService implements ReadableRepository<Link> {
+export class MockedLinkService implements ReadableRepository<Link, string> {
   private readonly authProvider = inject(AuthProvider);
   private readonly login: User['login'];
 

@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 
 import { MockedLinkService } from './mocked-link-service';
 import { AuthProvider } from '../auth-provider/auth-provider';
-import { MockedUserService } from '../mocked-user-service/mocked-user-service';
 import { ServiceToken } from '../tokens';
+import { ApiUserService } from '../api-user-service/api-user-service';
 
 describe('MockedLinkService', () => {
   let service: MockedLinkService;
@@ -13,7 +13,7 @@ describe('MockedLinkService', () => {
       providers: [
         MockedLinkService,
         AuthProvider,
-        { provide: ServiceToken.USER_SERVICE, useClass: MockedUserService },
+        { provide: ServiceToken.USER_SERVICE, useClass: ApiUserService },
         { provide: ServiceToken.LINK_SERVICE, useClass: MockedLinkService },
       ],
     });

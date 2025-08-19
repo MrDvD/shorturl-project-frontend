@@ -6,6 +6,6 @@ export const ServiceToken = {
   USER_SERVICE: new InjectionToken<CheckableRepository<User, Response>>(
     'UserService'
   ),
-  LINK_SERVICE: new InjectionToken<ReadableRepository<Link>>('LinkService'),
+  LINK_SERVICE: new InjectionToken<ReadableRepository<Link, string>>('LinkService'),
   // VISIT_SERVICE: new InjectionToken<CrudWorker<Visit>>('VisitService'),
 };

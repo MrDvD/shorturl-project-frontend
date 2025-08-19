@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   TuiAppearance,
@@ -18,7 +24,6 @@ import {
 } from '@taiga-ui/kit';
 import { LinkForm } from './link.form';
 import { TuiForm } from '@taiga-ui/layout';
-import { TuiDay, TuiTime } from '@taiga-ui/cdk/date-time';
 import { ServiceToken } from '../../services/tokens';
 import { take } from 'rxjs';
 import { FormatLinkPipe } from '../../pipes/format-link/FormatLink-pipe';
@@ -51,8 +56,7 @@ import { DomainProvider } from '../../services/domain-provider/domain-provider';
   styleUrl: './LinkFormComponent.less',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LinkFormComponent {
-  protected value: [TuiDay, TuiTime | null] | null = null;
+export class LinkFormComponent implements OnInit {
   protected linkForm = new LinkForm();
   protected resultLink = new FormControl<string | null>('');
   protected formAppearance = 'floating';
@@ -60,8 +64,14 @@ export class LinkFormComponent {
   private readonly authProvider = inject(AuthProvider);
   private readonly user = this.authProvider.getCurrentUser();
   private readonly formatLink = new FormatLinkPipe();
-  protected readonly domain = inject(DomainProvider).getDomain();
-  protected isSent = false;
+  protected readonly domain = inject(DomainProvider).getApiDomain();
+  sendMethod: 'POST' | 'PUT' = 'POST';
+  link_id: number | null = null;
+  protected isSent = signal(false);
+
+  ngOnInit(): void {
+    this.newForm();
+  }
 
   public getUser(): UID<Omit<User, 'password'>> {
     if (this.user) {
@@ -73,18 +83,42 @@ export class LinkFormComponent {
   public sendForm(): void {
     const link = this.linkForm.getLink();
     if (link) {
-      this.linkService
-        .create(link)
-        .pipe(take(1))
-        .subscribe({
-          next: (uid) => {
-            this.resultLink.setValue(this.formatLink.transform(uid.item));
-            this.isSent = true;
-          },
-          error: (error) => {
-            console.error('Error creating link:', error);
-          },
-        });
+      const signedLink = { ...link, owner: this.getUser().item.login };
+      switch (this.sendMethod) {
+        case 'POST':
+          this.linkService
+          .create(signedLink)
+          .pipe(take(1))
+          .subscribe({
+            next: (uid) => {
+              this.resultLink.setValue(this.formatLink.transform(uid.item));
+              this.isSent.set(true);
+            },
+            error: (error) => {
+              console.error('Error creating link:', error);
+            },
+          });
+          break;
+        case 'PUT':
+          if (this.link_id === null) {
+            throw new Error('Link ID is not set for update');
+          }
+          console.log('Updating link with ID:', this.link_id);
+          console.log('Link data:', signedLink);
+          this.linkService
+          .update({ id: this.link_id, item: signedLink })
+          .pipe(take(1))
+          .subscribe({
+            next: (uid) => {
+              this.resultLink.setValue(this.formatLink.transform(uid.item));
+              this.isSent.set(true);
+            },
+            error: (error) => {
+              console.error('Error creating link:', error);
+            },
+          });
+          break;
+      }
     } else {
       this.linkForm.markAllAsTouched();
     }
@@ -95,8 +129,21 @@ export class LinkFormComponent {
   }
 
   public newForm(): void {
-    this.linkForm.reset();
-    this.isSent = false;
+    if (this.user) {
+      this.linkForm.reset();
+    } else {
+      const nextMonth = new Date();
+      nextMonth.setMonth(nextMonth.getMonth() + 1);
+      this.linkForm.getType().disable();
+      this.linkForm.getHasExpire().disable();
+      // this.linkForm.getExpire().disable();
+      this.linkForm.patchValue({
+        type: 'short',
+        has_expire: true,
+        // expire: TuiDay.fromLocalNativeDate(nextMonth),
+      });
+    }
+    this.isSent.set(false);
   }
 
   public copyLink(): void {

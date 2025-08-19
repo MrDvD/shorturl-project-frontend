@@ -24,7 +24,14 @@ export class EditLinkForm implements OnInit {
           name: link.item.name || '',
           description: link.item.description || '',
         });
+        if (link.item.type === 'named' && link.item.short_id) {
+          this.component.getLinkForm().patchValue({
+            short_id: link.item.short_id,
+          });
+        }
       });
+      this.component.link_id = this.linkId;
+      this.component.sendMethod = 'PUT';
       this.component.setAppearance('flat');
       this.el.nativeElement.style.marginTop = '0';
     }

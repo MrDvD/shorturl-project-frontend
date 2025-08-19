@@ -1,14 +1,13 @@
 <app-to-services-component [title]="title"></app-to-services-component>
 
 <main class="services-grid">
+  @for (service of services.getAvailableServices(); track service.url) {
   <a
     class="service"
     tuiCardLarge
     tuiSurface="floating"
-    routerLink="/generate-url"
-    >Новая ссылка</a
+    [routerLink]="service.url"
+    >{{ service.name }}</a
   >
-  <a class="service" tuiCardLarge tuiSurface="floating" routerLink="/list-url">
-    Мои ссылки
-  </a>
+  }
 </main>
