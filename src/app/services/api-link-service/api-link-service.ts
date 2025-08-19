@@ -3,12 +3,13 @@ import { inject, Injectable } from '@angular/core';
 import { DomainProvider } from '../domain-provider/domain-provider';
 import { ReadableRepository } from '../interfaces';
 import { Link, UID } from '../../common/types';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, take, tap } from 'rxjs';
 
 @Injectable()
 export class ApiLinkService implements ReadableRepository<Link, string> {
   private readonly http = inject(HttpClient);
   private readonly domainProvider = inject(DomainProvider);
+  private readonly cachedLinks = new BehaviorSubject<UID<Link>[]>([]);
 
   read(id: number): Observable<UID<Link>> {
     return this.http
@@ -30,7 +31,7 @@ export class ApiLinkService implements ReadableRepository<Link, string> {
       );
   }
   readAll(selector: string): Observable<UID<Link>[]> {
-    return this.http
+    this.http
       .get<UID<Link>[]>(
         `${this.domainProvider.getApiDomain()}/v1/${selector}/links`,
         {
@@ -50,17 +51,28 @@ export class ApiLinkService implements ReadableRepository<Link, string> {
                 : undefined,
             },
           }))
-        )
-      );
+        ),
+        take(1)
+      )
+      .subscribe((links) => {
+        this.cachedLinks.next(links);
+      });
+    return this.cachedLinks;
   }
   create(item: Link): Observable<UID<Link>> {
-    return this.http.post<UID<Link>>(
-      `${this.domainProvider.getApiDomain()}/v1/generate-url`,
-      item,
-      {
-        withCredentials: true,
-      }
-    );
+    return this.http
+      .post<UID<Link>>(
+        `${this.domainProvider.getApiDomain()}/v1/generate-url`,
+        item,
+        {
+          withCredentials: true,
+        }
+      )
+      .pipe(
+        tap((newLink) => {
+          this.cachedLinks.next([...this.cachedLinks.getValue(), newLink]);
+        })
+      );
   }
   update(item: UID<Link>): Observable<UID<Link>> {
     return this.http
@@ -82,13 +94,28 @@ export class ApiLinkService implements ReadableRepository<Link, string> {
               ? link.item.update_date
               : undefined,
           },
-        }))
+        })),
+        tap((updatedLink) => {
+          this.cachedLinks.next(
+            this.cachedLinks
+              .getValue()
+              .map((link) => (link.id === updatedLink.id ? updatedLink : link))
+          );
+        })
       );
   }
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(
-      `${this.domainProvider.getApiDomain()}/v1/remove-link`,
-      { body: { id: id }, withCredentials: true }
-    );
+    return this.http
+      .delete<void>(`${this.domainProvider.getApiDomain()}/v1/remove-link`, {
+        body: { id: id },
+        withCredentials: true,
+      })
+      .pipe(
+        tap(() => {
+          this.cachedLinks.next(
+            this.cachedLinks.getValue().filter((link) => link.id !== id)
+          );
+        })
+      );
   }
 }

@@ -107,8 +107,6 @@ export class LinkFormComponent implements OnInit {
           if (this.link_id === null) {
             throw new Error('Link ID is not set for update');
           }
-          console.log('Updating link with ID:', this.link_id);
-          console.log('Link data:', signedLink);
           this.linkService
             .update({ id: this.link_id, item: signedLink })
             .pipe(take(1))
@@ -140,7 +138,7 @@ export class LinkFormComponent implements OnInit {
       nextMonth.setMonth(nextMonth.getMonth() + 1);
       this.linkForm.getType().disable();
       this.linkForm.getHasExpire().disable();
-      // this.linkForm.getExpire().disable();
+      this.linkForm.getExpire().disable();
       this.linkForm.patchValue({
         type: 'short',
         has_expire: true,

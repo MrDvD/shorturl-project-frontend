@@ -93,9 +93,6 @@ export class LinkInfoComponent {
       .delete(this.link.id)
       .pipe(take(1))
       .subscribe({
-        next: () => {
-          console.log('Link removed successfully');
-        },
         error: (error) => {
           console.error('Error removing link:', error);
         },
