@@ -6,9 +6,10 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-to-services-component',
   imports: [CommonModule, TuiButton, RouterLink],
-  templateUrl: './ToServicesComponent.html',
-  styleUrl: './ToServicesComponent.less',
+  templateUrl: './to-services-component.html',
+  styleUrl: './to-services-component.less',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class ToServicesComponent {
   @Input({ required: true }) title = '';

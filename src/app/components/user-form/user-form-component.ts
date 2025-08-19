@@ -28,8 +28,8 @@ import { AuthProvider } from '../../services/auth-provider/auth-provider';
     RouterLink,
     TuiAppearance,
   ],
-  templateUrl: './UserFormComponent.html',
-  styleUrl: './UserFormComponent.less',
+  templateUrl: './user-form-component.html',
+  styleUrl: './user-form-component.less',
 })
 export class UserFormComponent {
   private _userFormMode: UserFormMode = 'login';

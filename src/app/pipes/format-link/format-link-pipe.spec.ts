@@ -1,5 +1,5 @@
 import { DomainProvider } from '../../services/domain-provider/domain-provider';
-import { FormatLinkPipe } from './FormatLink-pipe';
+import { FormatLinkPipe } from './format-link-pipe';
 
 import { TestBed } from '@angular/core/testing';
 

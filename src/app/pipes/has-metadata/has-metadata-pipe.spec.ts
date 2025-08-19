@@ -1,4 +1,4 @@
-import { HasMetadataPipe } from './HasMetadata-pipe';
+import { HasMetadataPipe } from './has-metadata-pipe';
 
 describe('HasMetadataPipe', () => {
   it('create an instance', () => {

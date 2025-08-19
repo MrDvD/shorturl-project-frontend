@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { TakeValidators } from './TakeValidators';
+import { TakeValidators } from './edit-link-form-directive';
 import { NgControl } from '@angular/forms';
 
 describe('TakeValidators', () => {

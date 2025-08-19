@@ -15,12 +15,12 @@ import {
   TuiHint,
   TuiTextfield,
 } from '@taiga-ui/core';
-import { LinkFormComponent } from '../link-form/LinkFormComponent';
-import { EditLinkForm } from '../../directives/edit-link-form/EditLinkForm';
-import { FormatDatePipe } from '../../pipes/format-date/FormatDate-pipe';
+import { LinkFormComponent } from '../link-form/link-form-component';
+import { EditLinkForm } from '../../directives/edit-link-form/edit-link-form-directive';
+import { FormatDatePipe } from '../../pipes/format-date/format-date-pipe';
 import { Link, UID } from '../../common/types';
-import { WasUpdatedPipe } from '../../pipes/was-updated/WasUpdated-pipe';
-import { FormatLinkPipe } from '../../pipes/format-link/FormatLink-pipe';
+import { WasUpdatedPipe } from '../../pipes/was-updated/was-updated-pipe';
+import { FormatLinkPipe } from '../../pipes/format-link/format-link-pipe';
 import { ServiceToken } from '../../services/tokens';
 import { take } from 'rxjs';
 import { RouterLink } from '@angular/router';
@@ -44,8 +44,8 @@ import { RouterLink } from '@angular/router';
     TuiHint,
     RouterLink,
   ],
-  templateUrl: './LinkInfoComponent.html',
-  styleUrl: './LinkInfoComponent.less',
+  templateUrl: './link-info-component.html',
+  styleUrl: './link-info-component.less',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LinkInfoComponent {

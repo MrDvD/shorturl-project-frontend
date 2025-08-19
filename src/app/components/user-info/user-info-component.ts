@@ -16,7 +16,7 @@ import {
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TuiForm } from '@taiga-ui/layout';
 import { ServiceToken } from '../../services/tokens';
-import { FormValidator } from '../formValidators';
+import { FormValidator } from '../form-validators';
 import { TuiFieldErrorPipe } from '@taiga-ui/kit';
 import { UID, User } from '../../common/types';
 import { AuthProvider } from '../../services/auth-provider/auth-provider';
@@ -34,8 +34,8 @@ import { AuthProvider } from '../../services/auth-provider/auth-provider';
     TuiError,
     TuiFieldErrorPipe,
   ],
-  templateUrl: './UserInfoComponent.html',
-  styleUrl: './UserInfoComponent.less',
+  templateUrl: './user-info-component.html',
+  styleUrl: './user-info-component.less',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserInfoComponent {

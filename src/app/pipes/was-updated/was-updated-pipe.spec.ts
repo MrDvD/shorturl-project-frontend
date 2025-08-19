@@ -1,4 +1,4 @@
-import { WasUpdatedPipe } from './WasUpdated-pipe';
+import { WasUpdatedPipe } from './was-updated-pipe';
 
 describe('WasUpdatedPipe', () => {
   it('create an instance', () => {

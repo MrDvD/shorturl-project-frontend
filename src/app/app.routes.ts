@@ -1,9 +1,9 @@
 import { Route } from '@angular/router';
-import { EnterPageComponent } from './pages/enter-page-component/EnterPageComponent';
-import { GenerateLinkPageComponent } from './pages/generate-link-page-component/GenerateLinkPageComponent';
-import { ListLinkPageComponent } from './pages/list-link-page-component/ListLinkPageComponent';
-import { ServicesPageComponent } from './pages/services-page-component/ServicesPageComponent';
-import { AccountPageComponent } from './pages/account-page-component/AccountPageComponent';
+import { EnterPageComponent } from './pages/enter-page-component/enter-page-component';
+import { GenerateLinkPageComponent } from './pages/generate-link-page-component/generate-link-page-component';
+import { ListLinkPageComponent } from './pages/list-link-page-component/list-link-page-component';
+import { ServicesPageComponent } from './pages/services-page-component/services-page-component';
+import { AccountPageComponent } from './pages/account-page-component/account-page-component';
 import {
   canActivateGuestRouteGuard,
   canActivateUserRouteGuard,
@@ -43,14 +43,14 @@ export const appRoutes: Route[] = [
     children: [
       {
         path: 'list-url',
-        loadComponent: () => import('./pages/list-link-page-component/ListLinkPageComponent').then(
+        loadComponent: () => import('./pages/list-link-page-component/list-link-page-component').then(
           (m) => m.ListLinkPageComponent
         ),
         data: { title: 'Мои ссылки' },
       },
       {
         path: 'account',
-        loadComponent: () => import('./pages/account-page-component/AccountPageComponent').then(
+        loadComponent: () => import('./pages/account-page-component/account-page-component').then(
           (m) => m.AccountPageComponent
         ),
         data: { title: 'Мой аккаунт' },

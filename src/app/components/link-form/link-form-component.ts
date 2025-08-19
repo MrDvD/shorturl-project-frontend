@@ -26,8 +26,8 @@ import { LinkForm } from './link.form';
 import { TuiForm } from '@taiga-ui/layout';
 import { ServiceToken } from '../../services/tokens';
 import { take } from 'rxjs';
-import { FormatLinkPipe } from '../../pipes/format-link/FormatLink-pipe';
-import { TakeValidators } from '../../directives/take-validators/TakeValidators';
+import { FormatLinkPipe } from '../../pipes/format-link/format-link-pipe';
+import { TakeValidators } from '../../directives/take-validators/edit-link-form-directive';
 import { AuthProvider } from '../../services/auth-provider/auth-provider';
 import { UID, User } from '../../common/types';
 import { DomainProvider } from '../../services/domain-provider/domain-provider';
@@ -52,9 +52,10 @@ import { DomainProvider } from '../../services/domain-provider/domain-provider';
     TuiCopy,
     TakeValidators,
   ],
-  templateUrl: './LinkFormComponent.html',
-  styleUrl: './LinkFormComponent.less',
+  templateUrl: './link-form-component.html',
+  styleUrl: './link-form-component.less',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class LinkFormComponent implements OnInit {
   protected linkForm = new LinkForm();

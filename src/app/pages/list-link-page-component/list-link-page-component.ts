@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LinkInfoComponent } from '../../components/link-info/LinkInfoComponent';
+import { LinkInfoComponent } from '../../components/link-info/link-info-component';
 import { ActivatedRoute } from '@angular/router';
-import { ToServicesComponent } from '../../components/to-services/ToServicesComponent';
+import { ToServicesComponent } from '../../components/to-services/to-services-component';
 import { TuiButton, TuiDataList, TuiDropdown } from '@taiga-ui/core';
 import { ServiceToken } from '../../services/tokens';
 import { AuthProvider } from '../../services/auth-provider/auth-provider';
@@ -18,8 +18,8 @@ import { tap } from 'rxjs/internal/operators/tap';
     TuiDropdown,
     TuiDataList,
   ],
-  templateUrl: './ListLinkPageComponent.html',
-  styleUrl: './ListLinkPageComponent.less',
+  templateUrl: './list-link-page-component.html',
+  styleUrl: './list-link-page-component.less',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListLinkPageComponent {

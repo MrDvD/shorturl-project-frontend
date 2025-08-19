@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ToServicesComponent } from '../../components/to-services/ToServicesComponent';
+import { ToServicesComponent } from '../../components/to-services/to-services-component';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TuiCardLarge } from '@taiga-ui/layout';
 import { TuiAppearance, TuiSurface } from '@taiga-ui/core';
@@ -16,8 +16,8 @@ import { AvailableServicesProvider } from '../../services/available-services-pro
     RouterLink,
     TuiSurface,
   ],
-  templateUrl: './ServicesPageComponent.html',
-  styleUrl: './ServicesPageComponent.less',
+  templateUrl: './services-page-component.html',
+  styleUrl: './services-page-component.less',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })

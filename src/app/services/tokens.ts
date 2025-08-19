@@ -7,5 +7,4 @@ export const ServiceToken = {
     'UserService'
   ),
   LINK_SERVICE: new InjectionToken<ReadableRepository<Link, string>>('LinkService'),
-  // VISIT_SERVICE: new InjectionToken<CrudWorker<Visit>>('VisitService'),
 };

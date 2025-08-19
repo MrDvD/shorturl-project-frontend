@@ -1,5 +1,5 @@
 import { Directive, ElementRef, inject, Input, OnInit } from '@angular/core';
-import { LinkFormComponent } from '../../components/link-form/LinkFormComponent';
+import { LinkFormComponent } from '../../components/link-form/link-form-component';
 import { Link, UID } from '../../common/types';
 import { ServiceToken } from '../../services/tokens';
 
