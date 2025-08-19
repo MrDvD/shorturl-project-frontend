@@ -2,6 +2,7 @@ import Fastify from 'fastify';
 import fastifyCookie from '@fastify/cookie';
 import { initEndpoints } from './endpoints';
 import cors from '@fastify/cors';
+import fs from 'fs';
 
 function validateEnvironment() {
   return 'APP_SECRET' in process.env;
@@ -22,6 +23,7 @@ fastify.register(fastifyCookie, {
 await fastify.register(cors, {
   origin: true,
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 });
 
 initEndpoints(fastify);

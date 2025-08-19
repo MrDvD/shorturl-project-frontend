@@ -1,16 +1,8 @@
-import { DOCUMENT, inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class DomainProvider {
-  private document: Document = inject(DOCUMENT);
-
-  public getDomain(): string {
-    return (
-      this.document.location.protocol + '//' + this.document.location.hostname
-    );
-  }
-
   public getApiDomain(): string {
-    return 'http://localhost:3000';
+    return 'http://45.149.234.138:3000';
   }
 }

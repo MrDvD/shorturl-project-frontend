@@ -12,6 +12,8 @@ begin
   end loop;
 end $$;
 
+create type link_type as enum ('short', 'named');
+
 create table USERS(
   user_id serial primary key,
   login text not null unique,
@@ -24,36 +26,23 @@ create table USERS(
   )
 );
 
--- create table LINKS(
-  
--- );
-
--- create table VIEWS(
-
--- );
-
--- create table POSTS(
---   post_id serial primary key,
---   author_id integer references USERS(user_id) on delete cascade,
---   content text check(
---     content is null or content <> ''
---   ),
---   creation_timestamp timestamp not null default now()
--- );
-
--- create table LIKES(
---   post_id integer references POSTS(post_id) on delete cascade,
---   user_id integer references USERS(user_id) on delete no action,
---   primary key (post_id, user_id)
--- );
-
--- create table COMMENTS(
---   post_id integer references POSTS(post_id),
---   author_id integer references USERS(user_id),
---   comment_id serial,
---   content text check(
---     content is null or content <> ''
---   ),
---   creation_timestamp timestamp not null default now(),
---   primary key (post_id, comment_id)
--- );
+create table LINKS(
+  link_id serial primary key,
+  full_link text not null unique,
+  type link_type not null,
+  short_id text not null,
+  expire timestamp,
+  name text,
+  description text,
+  create_date timestamp not null default now(),
+  update_date timestamp,
+  owner text not null references users(login),
+  check (
+    full_link <> '' and
+    short_id <> '' and
+    (name is null or name <> '') and
+    (description is null or description <> '') and
+    (update_date is null or update_date > create_date) and
+    (expire is null or expire > create_date)
+  )
+);

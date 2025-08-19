@@ -10,7 +10,7 @@ import {
 import { UserForm, UserFormMode } from './user.form';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TuiFieldErrorPipe } from '@taiga-ui/kit';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { ServiceToken } from '../../services/tokens';
 import { take } from 'rxjs';
 import { AuthProvider } from '../../services/auth-provider/auth-provider';
@@ -34,7 +34,6 @@ import { AuthProvider } from '../../services/auth-provider/auth-provider';
 export class UserFormComponent {
   private _userFormMode: UserFormMode = 'login';
   private readonly userService = inject(ServiceToken.USER_SERVICE);
-  private readonly router = inject(Router);
   private readonly authProvider = inject(AuthProvider);
 
   @Input({ required: true })

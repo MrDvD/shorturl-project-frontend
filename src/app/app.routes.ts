@@ -17,10 +17,7 @@ export const appRoutes: Route[] = [
     canActivate: [canActivateGuestRouteGuard],
     data: { mode: 'login' },
     providers: [
-      {
-        provide: AuthProvider,
-        useClass: AuthProvider,
-      },
+      AuthProvider,
     ],
   },
   {
@@ -29,10 +26,7 @@ export const appRoutes: Route[] = [
     canActivate: [canActivateGuestRouteGuard],
     data: { mode: 'register' },
     providers: [
-      {
-        provide: AuthProvider,
-        useClass: AuthProvider,
-      },
+      AuthProvider,
     ],
   },
   {
@@ -44,20 +38,21 @@ export const appRoutes: Route[] = [
     path: ':login',
     canActivate: [canActivateUserRouteGuard],
     providers: [
-      {
-        provide: AuthProvider,
-        useClass: AuthProvider,
-      },
+      AuthProvider,
     ],
     children: [
       {
         path: 'list-url',
-        component: ListLinkPageComponent,
+        loadComponent: () => import('./pages/list-link-page-component/ListLinkPageComponent').then(
+          (m) => m.ListLinkPageComponent
+        ),
         data: { title: 'Мои ссылки' },
       },
       {
         path: 'account',
-        component: AccountPageComponent,
+        loadComponent: () => import('./pages/account-page-component/AccountPageComponent').then(
+          (m) => m.AccountPageComponent
+        ),
         data: { title: 'Мой аккаунт' },
       },
     ],

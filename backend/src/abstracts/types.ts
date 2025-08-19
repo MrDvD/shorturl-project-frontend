@@ -34,6 +34,19 @@ export type Link = {
   owner: User['login'];
 };
 
+export type RawLink = {
+  link_id: number;
+  full_link: string;
+  type: LinkType;
+  short_id: string;
+  expire: string;
+  name: string;
+  description: string;
+  create_date: string;
+  update_date: string;
+  owner: string;
+}
+
 export type Response = {
   user: UID<Omit<User, 'password'>>;
 };

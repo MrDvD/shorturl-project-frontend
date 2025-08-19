@@ -8,6 +8,7 @@ import { AuthProvider } from './services/auth-provider/auth-provider';
 import { AvailableServicesProvider } from './services/available-services-provider/available-services-provider';
 import { UID, User } from './common/types';
 import { ApiUserService } from './services/api-user-service/api-user-service';
+import { ApiLinkService } from './services/api-link-service/api-link-service';
 
 @Component({
   imports: [RouterModule, TuiButton, TuiRoot],
@@ -20,7 +21,7 @@ import { ApiUserService } from './services/api-user-service/api-user-service';
     AuthProvider,
     {
       provide: ServiceToken.LINK_SERVICE,
-      useClass: MockedLinkService,
+      useClass: ApiLinkService,
     },
     {
       provide: ServiceToken.USER_SERVICE,

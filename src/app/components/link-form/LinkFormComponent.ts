@@ -3,6 +3,7 @@ import {
   Component,
   inject,
   OnInit,
+  signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -63,8 +64,10 @@ export class LinkFormComponent implements OnInit {
   private readonly authProvider = inject(AuthProvider);
   private readonly user = this.authProvider.getCurrentUser();
   private readonly formatLink = new FormatLinkPipe();
-  protected readonly domain = inject(DomainProvider).getDomain();
-  protected isSent = false;
+  protected readonly domain = inject(DomainProvider).getApiDomain();
+  sendMethod: 'POST' | 'PUT' = 'POST';
+  link_id: number | null = null;
+  protected isSent = signal(false);
 
   ngOnInit(): void {
     this.newForm();
@@ -80,18 +83,42 @@ export class LinkFormComponent implements OnInit {
   public sendForm(): void {
     const link = this.linkForm.getLink();
     if (link) {
-      this.linkService
-        .create(link)
-        .pipe(take(1))
-        .subscribe({
-          next: (uid) => {
-            this.resultLink.setValue(this.formatLink.transform(uid.item));
-            this.isSent = true;
-          },
-          error: (error) => {
-            console.error('Error creating link:', error);
-          },
-        });
+      const signedLink = { ...link, owner: this.getUser().item.login };
+      switch (this.sendMethod) {
+        case 'POST':
+          this.linkService
+          .create(signedLink)
+          .pipe(take(1))
+          .subscribe({
+            next: (uid) => {
+              this.resultLink.setValue(this.formatLink.transform(uid.item));
+              this.isSent.set(true);
+            },
+            error: (error) => {
+              console.error('Error creating link:', error);
+            },
+          });
+          break;
+        case 'PUT':
+          if (this.link_id === null) {
+            throw new Error('Link ID is not set for update');
+          }
+          console.log('Updating link with ID:', this.link_id);
+          console.log('Link data:', signedLink);
+          this.linkService
+          .update({ id: this.link_id, item: signedLink })
+          .pipe(take(1))
+          .subscribe({
+            next: (uid) => {
+              this.resultLink.setValue(this.formatLink.transform(uid.item));
+              this.isSent.set(true);
+            },
+            error: (error) => {
+              console.error('Error creating link:', error);
+            },
+          });
+          break;
+      }
     } else {
       this.linkForm.markAllAsTouched();
     }
@@ -116,7 +143,7 @@ export class LinkFormComponent implements OnInit {
         // expire: TuiDay.fromLocalNativeDate(nextMonth),
       });
     }
-    this.isSent = false;
+    this.isSent.set(false);
   }
 
   public copyLink(): void {

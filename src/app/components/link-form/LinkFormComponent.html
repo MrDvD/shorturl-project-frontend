@@ -1,4 +1,4 @@
-@if (!isSent) {
+@if (!isSent()) {
 <form
   tuiForm="l"
   [formGroup]="linkForm"
@@ -186,10 +186,12 @@
       <img src="svg/copy.svg" alt="Copy" />
     </button>
   </div>
+  @if (sendMethod === 'POST') {
   <div class="inline-group">
     <button tuiButton appearance="secondary" class="wide" (click)="newForm()">
       Создать новую ссылку
     </button>
   </div>
+  }
 </form>
 }

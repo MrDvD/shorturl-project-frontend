@@ -7,10 +7,10 @@ export interface GenericRepository<T, K extends keyof T = never> {
   delete(id: UID<T>['id']): Observable<void>;
 }
 
-export interface ReadableRepository<T, K extends keyof T = never>
+export interface ReadableRepository<T, Selector, K extends keyof T = never>
   extends GenericRepository<T, K> {
   read(id: UID<T>['id']): Observable<UID<Omit<T, K>>>;
-  readAll(): Observable<UID<Omit<T, K>>[]>;
+  readAll(selector: Selector): Observable<UID<Omit<T, K>>[]>;
 }
 
 export interface CheckableRepository<T, Response, K extends keyof T = never>

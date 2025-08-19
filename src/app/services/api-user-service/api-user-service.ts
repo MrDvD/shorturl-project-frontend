@@ -15,27 +15,31 @@ export class ApiUserService
   create(item: User): Observable<UID<Omit<User, 'password'>>> {
     return this.http.post<UID<Omit<User, 'password'>>>(
       `${this.domainProvider.getApiDomain()}/register`,
-      item
+      item,
+      { withCredentials: true }
     );
   }
 
   check(item: User): Observable<Response> {
     return this.http.post<Response>(
       `${this.domainProvider.getApiDomain()}/login`,
-      item
+      item,
+      { withCredentials: true }
     );
   }
 
   update(item: UID<User>): Observable<UID<Omit<User, 'password'>>> {
     return this.http.put<UID<Omit<User, 'password'>>>(
       `${this.domainProvider.getApiDomain()}/${item.id}`,
-      item
+      item,
+      { withCredentials: true }
     );
   }
 
   delete(id: UID<User>['id']): Observable<void> {
     return this.http.delete<void>(
-      `${this.domainProvider.getApiDomain()}/users/${id}`
+      `${this.domainProvider.getApiDomain()}/users/${id}`,
+      { withCredentials: true }
     );
   }
 }

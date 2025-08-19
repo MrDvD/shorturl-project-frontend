@@ -46,6 +46,4 @@ Thumbs.db
 .angular
 
 # my
-backend/node_modules
-backend/dist
-backend/postgresql
+backend/
