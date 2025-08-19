@@ -6,7 +6,6 @@ import { ToServicesComponent } from '../../components/to-services/to-services-co
 import { TuiButton, TuiDataList, TuiDropdown } from '@taiga-ui/core';
 import { ServiceToken } from '../../services/tokens';
 import { AuthProvider } from '../../services/auth-provider/auth-provider';
-import { tap } from 'rxjs/internal/operators/tap';
 
 @Component({
   selector: 'app-list-link-page-component',
@@ -23,10 +22,12 @@ import { tap } from 'rxjs/internal/operators/tap';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListLinkPageComponent {
+  private readonly linksService = inject(ServiceToken.LINK_SERVICE);
   private readonly route = inject(ActivatedRoute);
   private readonly authProvider = inject(AuthProvider);
   protected title = this.route.snapshot.data['title'];
   protected isSortOpened = false;
-  private linksService = inject(ServiceToken.LINK_SERVICE);
-  protected links$ = this.linksService.readAll(this.authProvider.getCurrentUser()?.item.login || '');
+  protected links$ = this.linksService.readAll(
+    this.authProvider.getCurrentUser()?.item.login || ''
+  );
 }

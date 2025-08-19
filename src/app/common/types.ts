@@ -18,13 +18,13 @@ export type Link = {
   type: LinkType;
   short_id?: string;
   has_expire: boolean;
-  expire?: Date;
+  expire?: string;
   has_metadata: boolean;
   name?: string;
   description?: string;
-  create_date: Date;
-  update_date?: Date;
-  owner: User['login'];
+  create_date: string;
+  update_date?: string;
+  owner: User['login'] | null;
 };
 
 export type Response = {

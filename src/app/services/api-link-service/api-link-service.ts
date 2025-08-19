@@ -11,36 +11,47 @@ export class ApiLinkService implements ReadableRepository<Link, string> {
   private readonly domainProvider = inject(DomainProvider);
 
   read(id: number): Observable<UID<Link>> {
-    return this.http.get<UID<Link>>(
-      `${this.domainProvider.getApiDomain()}/v1/link/${id}`,
-      {
+    return this.http
+      .get<UID<Link>>(`${this.domainProvider.getApiDomain()}/v1/link/${id}`, {
         withCredentials: true,
-      }
-    ).pipe(map(link => ({
-      ...link,
-      item: {
-        ...link.item,
-        expire: link.item.expire ? new Date(link.item.expire) : undefined,
-        create_date: new Date(link.item.create_date),
-        update_date: link.item.update_date ? new Date(link.item.update_date) : undefined,
-      },
-    })));
+      })
+      .pipe(
+        map((link) => ({
+          ...link,
+          item: {
+            ...link.item,
+            expire: link.item.expire ? link.item.expire : undefined,
+            create_date: link.item.create_date,
+            update_date: link.item.update_date
+              ? link.item.update_date
+              : undefined,
+          },
+        }))
+      );
   }
   readAll(selector: string): Observable<UID<Link>[]> {
-    return this.http.get<UID<Link>[]>(
-      `${this.domainProvider.getApiDomain()}/v1/${selector}/links`,
-      {
-        withCredentials: true,
-      }
-    ).pipe(map(links => links.map(link => ({
-      ...link,
-      item: {
-        ...link.item,
-        expire: link.item.expire ? new Date(link.item.expire) : undefined,
-        create_date: new Date(link.item.create_date),
-        update_date: link.item.update_date ? new Date(link.item.update_date) : undefined,
-      },
-    }))));
+    return this.http
+      .get<UID<Link>[]>(
+        `${this.domainProvider.getApiDomain()}/v1/${selector}/links`,
+        {
+          withCredentials: true,
+        }
+      )
+      .pipe(
+        map((links) =>
+          links.map((link) => ({
+            ...link,
+            item: {
+              ...link.item,
+              expire: link.item.expire ? link.item.expire : undefined,
+              create_date: link.item.create_date,
+              update_date: link.item.update_date
+                ? link.item.update_date
+                : undefined,
+            },
+          }))
+        )
+      );
   }
   create(item: Link): Observable<UID<Link>> {
     return this.http.post<UID<Link>>(
@@ -52,21 +63,27 @@ export class ApiLinkService implements ReadableRepository<Link, string> {
     );
   }
   update(item: UID<Link>): Observable<UID<Link>> {
-    return this.http.put<UID<Link>>(
-      `${this.domainProvider.getApiDomain()}/v1/link/${item.id}/update`,
-      item.item,
-      {
-        withCredentials: true,
-      }
-    ).pipe(map(link => ({
-      ...link,
-      item: {
-        ...link.item,
-        expire: link.item.expire ? new Date(link.item.expire) : undefined,
-        create_date: new Date(link.item.create_date),
-        update_date: link.item.update_date ? new Date(link.item.update_date) : undefined,
-      },
-    })));
+    return this.http
+      .put<UID<Link>>(
+        `${this.domainProvider.getApiDomain()}/v1/link/${item.id}/update`,
+        item.item,
+        {
+          withCredentials: true,
+        }
+      )
+      .pipe(
+        map((link) => ({
+          ...link,
+          item: {
+            ...link.item,
+            expire: link.item.expire ? link.item.expire : undefined,
+            create_date: link.item.create_date,
+            update_date: link.item.update_date
+              ? link.item.update_date
+              : undefined,
+          },
+        }))
+      );
   }
   delete(id: number): Observable<void> {
     return this.http.delete<void>(

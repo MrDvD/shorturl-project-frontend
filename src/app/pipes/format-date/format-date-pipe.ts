@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'formatDate',
 })
 export class FormatDatePipe implements PipeTransform {
-  transform(date: Date): string {
-    return date.toUTCString();
+  transform(date: string): string {
+    return new Date(date).toUTCString();
   }
 }

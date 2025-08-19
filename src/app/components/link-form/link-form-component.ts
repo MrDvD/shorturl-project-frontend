@@ -84,21 +84,24 @@ export class LinkFormComponent implements OnInit {
   public sendForm(): void {
     const link = this.linkForm.getLink();
     if (link) {
-      const signedLink = { ...link, owner: this.getUser().item.login };
+      const signedLink = {
+        ...link,
+        owner: this.user ? this.user.item.login : null,
+      };
       switch (this.sendMethod) {
         case 'POST':
           this.linkService
-          .create(signedLink)
-          .pipe(take(1))
-          .subscribe({
-            next: (uid) => {
-              this.resultLink.setValue(this.formatLink.transform(uid.item));
-              this.isSent.set(true);
-            },
-            error: (error) => {
-              console.error('Error creating link:', error);
-            },
-          });
+            .create(signedLink)
+            .pipe(take(1))
+            .subscribe({
+              next: (uid) => {
+                this.resultLink.setValue(this.formatLink.transform(uid.item));
+                this.isSent.set(true);
+              },
+              error: (error) => {
+                console.error('Error creating link:', error);
+              },
+            });
           break;
         case 'PUT':
           if (this.link_id === null) {
@@ -107,17 +110,17 @@ export class LinkFormComponent implements OnInit {
           console.log('Updating link with ID:', this.link_id);
           console.log('Link data:', signedLink);
           this.linkService
-          .update({ id: this.link_id, item: signedLink })
-          .pipe(take(1))
-          .subscribe({
-            next: (uid) => {
-              this.resultLink.setValue(this.formatLink.transform(uid.item));
-              this.isSent.set(true);
-            },
-            error: (error) => {
-              console.error('Error creating link:', error);
-            },
-          });
+            .update({ id: this.link_id, item: signedLink })
+            .pipe(take(1))
+            .subscribe({
+              next: (uid) => {
+                this.resultLink.setValue(this.formatLink.transform(uid.item));
+                this.isSent.set(true);
+              },
+              error: (error) => {
+                console.error('Error creating link:', error);
+              },
+            });
           break;
       }
     } else {

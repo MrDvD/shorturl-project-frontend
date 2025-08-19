@@ -6,6 +6,7 @@ import {
 } from '@angular/forms';
 import { Link, Optional } from '../../common/types';
 import { FormValidator } from '../form-validators';
+import { TuiDay, TuiTime } from '@taiga-ui/cdk';
 
 export class LinkForm extends FormGroup {
   constructor() {
@@ -14,7 +15,7 @@ export class LinkForm extends FormGroup {
       type: new FormControl<Link['type'] | null>(null),
       short_id: new FormControl<Link['short_id'] | null>(null),
       has_expire: new FormControl<Link['has_expire'] | null>(null),
-      expire: new FormControl<Link['expire'] | null>(null),
+      expire: new FormControl<[TuiDay, TuiTime] | null>(null),
       has_metadata: new FormControl<Link['has_metadata'] | null>(false),
       name: new FormControl<Link['name'] | null>(null),
       description: new FormControl<Link['description'] | null>(null),
@@ -35,7 +36,18 @@ export class LinkForm extends FormGroup {
   }
 
   public getLink(): Optional<Link> {
-    return this.valid ? this.getRawValue() : null;
+    const { expire } = this.getRawValue();
+    if (expire) {
+      const [day, time] = expire;
+      const date = (day as TuiDay).toLocalNativeDate();
+      const timeInMs = (time as TuiTime).toAbsoluteMilliseconds();
+      const combinedDate = new Date(date.getTime() + timeInMs);
+
+      return this.valid
+        ? { ...this.getRawValue(), expire: combinedDate }
+        : null;
+    }
+    return this.getRawValue();
   }
 
   public getFullLink(): AbstractControl {
