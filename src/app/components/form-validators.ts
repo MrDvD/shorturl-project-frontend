@@ -4,7 +4,7 @@ export class FormValidator {
   public static required(field: AbstractControl): ValidationErrors | null {
     return field.value !== undefined &&
       field.value !== null &&
-      field.value !== ''
+      (typeof field.value !== 'string' || field.value.trim() !== '')
       ? null
       : {
           other: 'Заполните это поле',

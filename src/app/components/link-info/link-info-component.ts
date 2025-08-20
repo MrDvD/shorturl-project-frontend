@@ -23,7 +23,6 @@ import { WasUpdatedPipe } from '../../pipes/was-updated/was-updated-pipe';
 import { FormatLinkPipe } from '../../pipes/format-link/format-link-pipe';
 import { ServiceToken } from '../../services/tokens';
 import { take } from 'rxjs';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-link-info-component',
@@ -42,7 +41,6 @@ import { RouterLink } from '@angular/router';
     WasUpdatedPipe,
     FormatLinkPipe,
     TuiHint,
-    RouterLink,
   ],
   templateUrl: './link-info-component.html',
   styleUrl: './link-info-component.less',

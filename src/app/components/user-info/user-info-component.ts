@@ -92,7 +92,6 @@ export class UserInfoComponent {
   public updateEmail(): void {
     if (this.email.valid) {
       // this.userService.update(null)
-      console.log('Email updated:', this.email.value);
       this.previousEmail = this.email.value;
       this.resetEmail();
     } else {
@@ -108,7 +107,6 @@ export class UserInfoComponent {
     if (this.user) {
       this.userService.delete(this.user.id).subscribe({
         complete: () => {
-          console.log('User removed successfully');
           this.isRemoveOpened = false;
         },
         error: (error) => {

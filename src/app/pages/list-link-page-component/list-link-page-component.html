@@ -2,27 +2,13 @@
   [title]="title"
   redirectUrl="/"
 ></app-to-services-component>
-<button
-  tuiButton
-  appearance="outline"
-  class="icon-button"
-  size="m"
-  [tuiDropdown]="dropdown"
-  [(tuiDropdownOpen)]="isSortOpened"
->
-  <img src="svg/sort.svg" alt="Sort by" />
-  Дата
-</button>
-<ng-template #dropdown>
-  <tui-data-list size="s">
-    <tui-opt-group>
-      <button tuiOption type="button">По возрастанию</button>
-      <button tuiOption type="button">По убыванию</button>
-    </tui-opt-group>
-  </tui-data-list>
-</ng-template>
+<app-sort-option-component
+  (sortChange)="receiveSortParams($event)"
+></app-sort-option-component>
 @if (links$ | async; as links) { @for (link of links; track link.id) {
 <app-link-info-component [link]="link"></app-link-info-component>
-} } @else {
+} @if (links.length === 0) {
 <p>Ссылок нет</p>
+} } @else {
+<p>Загрузка ссылок, подождите...</p>
 }

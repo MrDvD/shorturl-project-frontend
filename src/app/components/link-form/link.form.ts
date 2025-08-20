@@ -36,6 +36,9 @@ export class LinkForm extends FormGroup {
   }
 
   public getLink(): Optional<Link> {
+    if (!this.valid) {
+      return null;
+    }
     const { expire } = this.getRawValue();
     if (expire) {
       const [day, time] = expire;
