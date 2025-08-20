@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { DomainProvider } from '../domain-provider/domain-provider';
+import { DomainService } from '../domain-service/domain-service';
 import { ReadableRepository } from '../interfaces';
 import { Link, UID } from '../../common/types';
 import { BehaviorSubject, map, Observable, take, tap } from 'rxjs';
@@ -8,7 +8,7 @@ import { BehaviorSubject, map, Observable, take, tap } from 'rxjs';
 @Injectable()
 export class ApiLinkService implements ReadableRepository<Link, string> {
   private readonly http = inject(HttpClient);
-  private readonly domainProvider = inject(DomainProvider);
+  private readonly domainProvider = inject(DomainService);
   private readonly cachedLinks = new BehaviorSubject<UID<Link>[]>([]);
 
   read(id: number): Observable<UID<Link>> {

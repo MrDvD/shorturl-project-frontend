@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { AuthProvider } from '../auth-provider/auth-provider';
+import { AuthService } from '../auth-service/auth-service';
 
 @Injectable()
 export class AvailableServicesProvider {
-  private readonly authProvider = inject(AuthProvider);
+  private readonly authProvider = inject(AuthService);
 
   public getAvailableServices(): { name: string; url: string }[] {
     const availableServices = [{ name: 'Новая ссылка', url: '/generate-url' }];

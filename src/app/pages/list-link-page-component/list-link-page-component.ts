@@ -4,7 +4,7 @@ import { LinkInfoComponent } from '../../components/link-info/link-info-componen
 import { ActivatedRoute } from '@angular/router';
 import { ToServicesComponent } from '../../components/to-services/to-services-component';
 import { ServiceToken } from '../../services/tokens';
-import { AuthProvider } from '../../services/auth-provider/auth-provider';
+import { AuthService } from '../../services/auth-service/auth-service';
 import { SortOptionComponent } from '../../components/sort-option/sort-option-component';
 import { SortParams } from '../../components/sort-option/types.util';
 import { map } from 'rxjs';
@@ -25,7 +25,7 @@ import { BehaviorSubject, combineLatest } from 'rxjs';
 export class ListLinkPageComponent {
   private readonly linksService = inject(ServiceToken.LINK_SERVICE);
   private readonly route = inject(ActivatedRoute);
-  private readonly authProvider = inject(AuthProvider);
+  private readonly authProvider = inject(AuthService);
   protected title = this.route.snapshot.data['title'];
   private readonly sortParamsSubject = new BehaviorSubject<SortParams>({
     criteria: 'create_date',

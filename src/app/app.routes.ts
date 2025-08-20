@@ -5,8 +5,8 @@ import { ServicesPageComponent } from './pages/services-page-component/services-
 import {
   canActivateGuestRouteGuard,
   canActivateUserRouteGuard,
-} from './services/auth-provider/guards';
-import { AuthProvider } from './services/auth-provider/auth-provider';
+} from './services/auth-service/guards';
+import { AuthService } from './services/auth-service/auth-service';
 
 export const appRoutes: Route[] = [
   {
@@ -14,14 +14,14 @@ export const appRoutes: Route[] = [
     component: EnterPageComponent,
     canActivate: [canActivateGuestRouteGuard],
     data: { mode: 'login' },
-    providers: [AuthProvider],
+    providers: [AuthService],
   },
   {
     path: 'register',
     component: EnterPageComponent,
     canActivate: [canActivateGuestRouteGuard],
     data: { mode: 'register' },
-    providers: [AuthProvider],
+    providers: [AuthService],
   },
   {
     path: 'generate-url',
@@ -31,7 +31,7 @@ export const appRoutes: Route[] = [
   {
     path: ':login',
     canActivate: [canActivateUserRouteGuard],
-    providers: [AuthProvider],
+    providers: [AuthService],
     children: [
       {
         path: 'list-url',

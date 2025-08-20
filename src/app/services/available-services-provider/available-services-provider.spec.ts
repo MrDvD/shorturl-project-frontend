@@ -1,14 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 
 import { AvailableServicesProvider } from './available-services-provider';
-import { AuthProvider } from '../auth-provider/auth-provider';
+import { AuthService } from '../auth-service/auth-service';
 
 describe('AvailableServicesProvider', () => {
   let service: AvailableServicesProvider;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [AvailableServicesProvider, AuthProvider],
+      providers: [AvailableServicesProvider, AuthService],
     });
     service = TestBed.inject(AvailableServicesProvider);
   });

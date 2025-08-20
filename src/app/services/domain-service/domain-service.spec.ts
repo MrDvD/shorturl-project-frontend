@@ -1,15 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 
-import { DomainProvider } from './domain-provider';
+import { DomainService } from './domain-service';
 
 describe('DomainProvider', () => {
-  let service: DomainProvider;
+  let service: DomainService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [DomainProvider],
+      providers: [DomainService],
     });
-    service = TestBed.inject(DomainProvider);
+    service = TestBed.inject(DomainService);
   });
 
   it('should be created', () => {

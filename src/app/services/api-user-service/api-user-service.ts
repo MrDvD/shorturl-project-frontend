@@ -3,14 +3,14 @@ import { CheckableRepository } from '../interfaces';
 import { UID, User } from '../../common/types';
 import { Observable, take } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { DomainProvider } from '../domain-provider/domain-provider';
+import { DomainService } from '../domain-service/domain-service';
 
 @Injectable()
 export class ApiUserService
   implements CheckableRepository<User, Response, 'password'>
 {
   private readonly http = inject(HttpClient);
-  private readonly domainProvider = inject(DomainProvider);
+  private readonly domainProvider = inject(DomainService);
 
   create(item: User): Observable<UID<Omit<User, 'password'>>> {
     return this.http

@@ -30,3 +30,16 @@ export type Link = {
 export type Response = {
   user: UID<Omit<User, 'password'>>;
 };
+
+export type ErrorResponse = {
+  message: string;
+};
+
+export function isErrorResponse(response: unknown): response is ErrorResponse {
+  return (
+    typeof response === 'object' &&
+    response !== null &&
+    'message' in response &&
+    typeof (response as ErrorResponse).message === 'string'
+  );
+}

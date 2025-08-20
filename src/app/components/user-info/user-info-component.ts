@@ -19,7 +19,7 @@ import { ServiceToken } from '../../services/tokens';
 import { FormValidator } from '../form-validators';
 import { TuiFieldErrorPipe } from '@taiga-ui/kit';
 import { UID, User } from '../../common/types';
-import { AuthProvider } from '../../services/auth-provider/auth-provider';
+import { AuthService } from '../../services/auth-service/auth-service';
 
 @Component({
   selector: 'app-user-info-component',
@@ -40,7 +40,7 @@ import { AuthProvider } from '../../services/auth-provider/auth-provider';
 })
 export class UserInfoComponent {
   private userService = inject(ServiceToken.USER_SERVICE);
-  private authProvider = inject(AuthProvider);
+  private authProvider = inject(AuthService);
   @ViewChild('emailInput') emailInput: ElementRef<HTMLInputElement> | null =
     null;
   private user: UID<Omit<User, 'password'>> | null = null;

@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
+  TuiAlertService,
   TuiAppearance,
   TuiButton,
   TuiError,
@@ -28,10 +29,12 @@ import { ServiceToken } from '../../services/tokens';
 import { take } from 'rxjs';
 import { FormatLinkPipe } from '../../pipes/format-link/format-link-pipe';
 import { TakeValidators } from '../../directives/take-validators/take-validators-directive';
-import { AuthProvider } from '../../services/auth-provider/auth-provider';
-import { UID, User } from '../../common/types';
-import { DomainProvider } from '../../services/domain-provider/domain-provider';
+import { AuthService } from '../../services/auth-service/auth-service';
+import { isErrorResponse, UID, User } from '../../common/types';
+import { DomainService } from '../../services/domain-service/domain-service';
 import { TuiDay, TuiTime } from '@taiga-ui/cdk';
+import { HttpErrorResponse } from '@angular/common/http';
+import { showError } from '../../services/alerts';
 
 @Component({
   selector: 'app-link-form-component',
@@ -60,8 +63,9 @@ import { TuiDay, TuiTime } from '@taiga-ui/cdk';
 })
 export class LinkFormComponent implements OnInit {
   private readonly linkService = inject(ServiceToken.LINK_SERVICE);
-  private readonly user = inject(AuthProvider).getCurrentUser();
-  protected readonly domain = inject(DomainProvider).getApiDomain();
+  private readonly alertService = inject(TuiAlertService);
+  private readonly user = inject(AuthService).getCurrentUser();
+  protected readonly domain = inject(DomainService).getApiDomain();
   protected resultLink = new FormControl<string | null>('');
   private readonly formatLink = new FormatLinkPipe();
   protected isSent = signal(false);
@@ -117,8 +121,12 @@ export class LinkFormComponent implements OnInit {
                 this.resultLink.setValue(this.formatLink.transform(uid.item));
                 this.isSent.set(true);
               },
-              error: (error) => {
-                console.error('Error creating link:', error);
+              error: (error: HttpErrorResponse) => {
+                if (isErrorResponse(error.error)) {
+                  showError(error.error, this.alertService).subscribe();
+                } else {
+                  console.error(error.error);
+                }
               },
             });
           break;
@@ -134,8 +142,12 @@ export class LinkFormComponent implements OnInit {
                 this.resultLink.setValue(this.formatLink.transform(uid.item));
                 this.isSent.set(true);
               },
-              error: (error) => {
-                console.error('Error creating link:', error);
+              error: (error: HttpErrorResponse) => {
+                if (isErrorResponse(error.error)) {
+                  showError(error.error, this.alertService).subscribe();
+                } else {
+                  console.error(error.error);
+                }
               },
             });
           break;

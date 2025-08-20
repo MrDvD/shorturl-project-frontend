@@ -1,4 +1,4 @@
-import { DomainProvider } from '../../services/domain-provider/domain-provider';
+import { DomainService } from '../../services/domain-service/domain-service';
 import { FormatLinkPipe } from './format-link-pipe';
 
 import { TestBed } from '@angular/core/testing';
@@ -6,7 +6,7 @@ import { TestBed } from '@angular/core/testing';
 describe('FormatLinkPipe', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [FormatLinkPipe, DomainProvider],
+      providers: [FormatLinkPipe, DomainService],
     });
   });
 
