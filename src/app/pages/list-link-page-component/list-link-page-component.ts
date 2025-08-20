@@ -36,14 +36,13 @@ export class ListLinkPageComponent {
     this.linksService.readAll(
       this.authProvider.getCurrentUser()?.item.login || ''
     ),
-    this.sortParamsSubject.asObservable(),
+    this.sortParamsSubject,
   ]).pipe(
-    map(([links, sortParams]) => {
-      const criteria = sortParams.criteria;
-      const type = sortParams.type === 'asc' ? 1 : -1;
+    map(([links, { criteria, type: sortType }]) => {
+      const type = sortType === 'asc' ? 1 : -1;
       return links.sort((a, b) => {
-        if (a.item[criteria] === undefined || b.item[criteria] === undefined) {
-          return 0;
+        if (!a.item[criteria] || !b.item[criteria]) {
+          return -1;
         }
         if (a.item[criteria] < b.item[criteria]) return -1 * type;
         if (a.item[criteria] > b.item[criteria]) return 1 * type;
