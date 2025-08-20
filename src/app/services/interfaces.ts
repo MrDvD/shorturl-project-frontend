@@ -3,7 +3,9 @@ import { UID } from '../common/types';
 
 export interface GenericRepository<T, K extends keyof T = never> {
   create(item: T): Observable<UID<Omit<T, K>>>;
-  update(item: UID<T>): Observable<UID<Omit<T, K>>>;
+  update(
+    item: UID<Omit<T, K> & Partial<Pick<T, K>>>
+  ): Observable<UID<Omit<T, K>>>;
   delete(id: UID<T>['id']): Observable<void>;
 }
 

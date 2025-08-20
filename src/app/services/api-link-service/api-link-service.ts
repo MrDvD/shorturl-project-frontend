@@ -27,7 +27,8 @@ export class ApiLinkService implements ReadableRepository<Link, string> {
               ? link.item.update_date
               : undefined,
           },
-        }))
+        })),
+        take(1)
       );
   }
   readAll(selector: string): Observable<UID<Link>[]> {
@@ -71,7 +72,8 @@ export class ApiLinkService implements ReadableRepository<Link, string> {
       .pipe(
         tap((newLink) => {
           this.cachedLinks.next([...this.cachedLinks.getValue(), newLink]);
-        })
+        }),
+        take(1)
       );
   }
   update(item: UID<Link>): Observable<UID<Link>> {
@@ -101,7 +103,8 @@ export class ApiLinkService implements ReadableRepository<Link, string> {
               .getValue()
               .map((link) => (link.id === updatedLink.id ? updatedLink : link))
           );
-        })
+        }),
+        take(1)
       );
   }
   delete(id: number): Observable<void> {
@@ -115,7 +118,8 @@ export class ApiLinkService implements ReadableRepository<Link, string> {
           this.cachedLinks.next(
             this.cachedLinks.getValue().filter((link) => link.id !== id)
           );
-        })
+        }),
+        take(1)
       );
   }
 }
