@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
+  TuiAlertService,
   TuiAppearance,
   TuiButton,
   TuiDialog,
@@ -18,8 +19,10 @@ import { TuiForm } from '@taiga-ui/layout';
 import { ServiceToken } from '../../services/tokens';
 import { FormValidator } from '../form-validators';
 import { TuiFieldErrorPipe } from '@taiga-ui/kit';
-import { UID, User } from '../../common/types';
+import { isErrorResponse, UID, User } from '../../common/types';
 import { AuthService } from '../../services/auth-service/auth-service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { showError } from '../../services/alerts';
 
 @Component({
   selector: 'app-user-info-component',
@@ -41,6 +44,7 @@ import { AuthService } from '../../services/auth-service/auth-service';
 export class UserInfoComponent {
   private userService = inject(ServiceToken.USER_SERVICE);
   private authProvider = inject(AuthService);
+  private readonly alertService = inject(TuiAlertService);
   @ViewChild('emailInput') emailInput: ElementRef<HTMLInputElement> | null =
     null;
   private user: UID<Omit<User, 'password'>> | null = null;
@@ -52,6 +56,7 @@ export class UserInfoComponent {
     [FormValidator.isEmail, FormValidator.required]
   );
   protected isRemoveOpened = false;
+  protected isChangePasswordOpened = false;
   protected previousEmail: string | null = null;
   protected isEditingEmail = false;
 
@@ -97,16 +102,17 @@ export class UserInfoComponent {
       newUser.item.email = this.email.value;
       this.userService.update(newUser).subscribe({
         next: (updatedUser) => {
-          console.log('hi yall');
-          console.log('Email updated successfully:', updatedUser);
           this.authProvider.setCurrentUser(updatedUser);
           this.user = updatedUser;
           this.previousEmail = this.email.value;
           this.resetEmail();
         },
-        error: (error) => {
-          console.error('Error updating email:', error);
-          this.email.setErrors({ serverError: 'Failed to update email' });
+        error: (error: HttpErrorResponse) => {
+          if (isErrorResponse(error.error)) {
+            showError(error.error, this.alertService).subscribe();
+          } else {
+            showError(error, this.alertService).subscribe();
+          }
         },
       });
     } else {
@@ -126,12 +132,20 @@ export class UserInfoComponent {
           this.authProvider.clear();
           window.location.href = '/';
         },
-        error: (error) => {
-          console.error('Error removing user', error);
+        error: (error: HttpErrorResponse) => {
+          if (isErrorResponse(error.error)) {
+            showError(error.error, this.alertService).subscribe();
+          } else {
+            showError(error, this.alertService).subscribe();
+          }
         },
       });
     } else {
       throw new Error('User is not provided');
     }
+  }
+
+  public openChangePasswordDialog(): void {
+    this.isChangePasswordOpened = true;
   }
 }

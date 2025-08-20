@@ -125,7 +125,7 @@ export class LinkFormComponent implements OnInit {
                 if (isErrorResponse(error.error)) {
                   showError(error.error, this.alertService).subscribe();
                 } else {
-                  console.error(error.error);
+                  showError(error, this.alertService).subscribe();
                 }
               },
             });
@@ -146,7 +146,7 @@ export class LinkFormComponent implements OnInit {
                 if (isErrorResponse(error.error)) {
                   showError(error.error, this.alertService).subscribe();
                 } else {
-                  console.error(error.error);
+                  showError(error, this.alertService).subscribe();
                 }
               },
             });

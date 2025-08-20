@@ -27,7 +27,13 @@
     [error]="[] | tuiFieldError | async"
   ></tui-error>
   <div class="inline-group">
-    <button tuiButton appearance="primary" class="wide" type="button">
+    <button
+      tuiButton
+      appearance="primary"
+      class="wide"
+      type="button"
+      (click)="openChangePasswordDialog()"
+    >
       Смена пароля
     </button>
     <button
@@ -52,5 +58,28 @@
     >
       Подтверждаю удаление аккаунта
     </button>
+  </div>
+</ng-template>
+<ng-template [(tuiDialog)]="isChangePasswordOpened">
+  <div class="centered-dialog">
+    <form>
+      <tui-textfield class="wide">
+        <label tuiLabel htmlFor="email">Новый пароль</label>
+        <input tuiTextfield [formControl]="email" #emailInput />
+      </tui-textfield>
+      <tui-textfield class="wide">
+        <label tuiLabel htmlFor="email">Повторите пароль</label>
+        <input tuiTextfield [formControl]="email" #emailInput />
+      </tui-textfield>
+      <button
+        type="button"
+        tuiButton
+        appearance="secondary"
+        class="icon-button"
+        (click)="editEmail()"
+      >
+        <img src="svg/check.svg" alt="Save" />
+      </button>
+    </form>
   </div>
 </ng-template>

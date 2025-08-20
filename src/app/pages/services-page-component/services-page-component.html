@@ -1,13 +1,9 @@
 <app-to-services-component [title]="title"></app-to-services-component>
 
 <main class="services-grid">
-  @for (service of services.getAvailableServices(); track service.url) {
-  <a
-    class="service"
-    tuiCardLarge
-    tuiSurface="floating"
-    [routerLink]="service.url"
-    >{{ service.name }}</a
+  @for (page of services.getAvailablePages(); track page.url) {
+  <a class="service" tuiCardLarge tuiSurface="floating" [routerLink]="page.url"
+    >{{ page.name }}</a
   >
   }
 </main>

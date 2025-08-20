@@ -70,7 +70,7 @@ export class UserFormComponent {
                 if (isErrorResponse(error.error)) {
                   showError(error.error, this.alertService).subscribe();
                 } else {
-                  console.error(error.error);
+                  showError(error, this.alertService).subscribe();
                 }
               },
             });
@@ -89,7 +89,7 @@ export class UserFormComponent {
                 if (isErrorResponse(error.error)) {
                   showError(error.error, this.alertService).subscribe();
                 } else {
-                  console.error(error.error);
+                  showError(error, this.alertService).subscribe();
                 }
               },
             });

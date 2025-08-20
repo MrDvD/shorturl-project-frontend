@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { ServiceToken } from './services/tokens';
 import { DomainService } from './services/domain-service/domain-service';
 import { AuthService } from './services/auth-service/auth-service';
-import { AvailableServicesProvider } from './services/available-services-provider/available-services-provider';
+import { AvailablePagesService } from './services/available-pages-service/available-pages-service';
 import { UID, User } from './common/types';
 import { ApiUserService } from './services/api-user-service/api-user-service';
 import { ApiLinkService } from './services/api-link-service/api-link-service';
@@ -27,7 +27,7 @@ import { ApiLinkService } from './services/api-link-service/api-link-service';
       useClass: ApiUserService,
     },
     DomainService,
-    AvailableServicesProvider,
+    AvailablePagesService,
   ],
 })
 export class App {

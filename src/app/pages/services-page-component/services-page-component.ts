@@ -4,7 +4,7 @@ import { ToServicesComponent } from '../../components/to-services/to-services-co
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TuiCardLarge } from '@taiga-ui/layout';
 import { TuiAppearance, TuiSurface } from '@taiga-ui/core';
-import { AvailableServicesProvider } from '../../services/available-services-provider/available-services-provider';
+import { AvailablePagesService } from '../../services/available-pages-service/available-pages-service';
 
 @Component({
   selector: 'app-services-page-component',
@@ -22,7 +22,7 @@ import { AvailableServicesProvider } from '../../services/available-services-pro
   standalone: true,
 })
 export class ServicesPageComponent {
-  protected services = inject(AvailableServicesProvider);
+  protected services = inject(AvailablePagesService);
   private route = inject(ActivatedRoute);
 
   protected title = this.route.snapshot.data['title'];
