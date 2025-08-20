@@ -9,16 +9,37 @@ import { FormValidator } from '../form-validators';
 import { TuiDay, TuiTime } from '@taiga-ui/cdk';
 
 export class LinkForm extends FormGroup {
-  constructor() {
+  constructor(
+    defaultValues: Partial<
+      Omit<Link, 'expire'> & { expire?: [TuiDay, TuiTime] }
+    > = {}
+  ) {
     super({
-      full_link: new FormControl<Link['full_link'] | null>(null),
-      type: new FormControl<Link['type'] | null>(null),
-      short_id: new FormControl<Link['short_id'] | null>(null),
-      has_expire: new FormControl<Link['has_expire'] | null>(null),
-      expire: new FormControl<[TuiDay, TuiTime] | null>(null),
-      has_metadata: new FormControl<Link['has_metadata'] | null>(false),
-      name: new FormControl<Link['name'] | null>(null),
-      description: new FormControl<Link['description'] | null>(null),
+      full_link: new FormControl<Link['full_link'] | null>(
+        defaultValues.full_link ?? null
+      ),
+      type: new FormControl<Link['type'] | null>(defaultValues.type ?? null, {
+        nonNullable: true,
+      }),
+      short_id: new FormControl<Link['short_id'] | null>(
+        defaultValues.short_id ?? null
+      ),
+      has_expire: new FormControl<Link['has_expire'] | null>(
+        defaultValues.has_expire ?? null,
+        { nonNullable: true }
+      ),
+      expire: new FormControl<[TuiDay, TuiTime] | null>(
+        defaultValues.expire ?? null,
+        { nonNullable: true }
+      ),
+      has_metadata: new FormControl<Link['has_metadata']>(
+        defaultValues.has_metadata ?? false,
+        { nonNullable: true }
+      ),
+      name: new FormControl<Link['name'] | null>(defaultValues.name ?? null),
+      description: new FormControl<Link['description'] | null>(
+        defaultValues.description ?? null
+      ),
     });
   }
 

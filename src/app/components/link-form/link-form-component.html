@@ -1,7 +1,7 @@
 @if (!isSent()) {
 <form
   tuiForm="l"
-  [formGroup]="linkForm"
+  [formGroup]="getLinkForm()"
   [tuiAppearance]="formAppearance"
   class="app-form link"
   (ngSubmit)="sendForm()"
@@ -13,7 +13,7 @@
         formControlName="full_link"
         tuiTextfield
         appTakeValidators
-        [validatorsMap]="linkForm.getValidators()"
+        [validatorsMap]="getLinkForm().getValidators()"
       />
     </tui-textfield>
     <button tuiButton appearance="primary" type="submit" class="submit-button">
@@ -25,7 +25,7 @@
     [error]="[] | tuiFieldError | async"
   ></tui-error>
 
-  @if (linkForm.getFullLink().valid) {
+  @if (getLinkForm().getFullLink().valid) {
   <div class="inline-group">
     <p>Тип ссылки:</p>
     <div tuiGroup class="wide">
@@ -37,7 +37,7 @@
           value="short"
           formControlName="type"
           appTakeValidators
-          [validatorsMap]="linkForm.getValidators()"
+          [validatorsMap]="getLinkForm().getValidators()"
         />
       </label>
       <label tuiBlock>
@@ -48,7 +48,7 @@
           value="named"
           formControlName="type"
           appTakeValidators
-          [validatorsMap]="linkForm.getValidators()"
+          [validatorsMap]="getLinkForm().getValidators()"
         />
       </label>
     </div>
@@ -58,7 +58,7 @@
     [error]="[] | tuiFieldError | async"
   ></tui-error>
 
-  @if (linkForm.getType().value === 'named') {
+  @if (getLinkForm().getType().value === 'named') {
   <div class="inline-group">
     <p>{{ domain }}/{{ getUser().item.login }}/</p>
     <label class="wide">
@@ -68,7 +68,7 @@
           placeholder="link"
           tuiTextfield
           appTakeValidators
-          [validatorsMap]="linkForm.getValidators()"
+          [validatorsMap]="getLinkForm().getValidators()"
         />
       </tui-textfield>
     </label>
@@ -90,7 +90,7 @@
           [value]="false"
           formControlName="has_expire"
           appTakeValidators
-          [validatorsMap]="linkForm.getValidators()"
+          [validatorsMap]="getLinkForm().getValidators()"
         />
       </label>
       <label tuiBlock>
@@ -101,7 +101,7 @@
           [value]="true"
           formControlName="has_expire"
           appTakeValidators
-          [validatorsMap]="linkForm.getValidators()"
+          [validatorsMap]="getLinkForm().getValidators()"
         />
       </label>
     </div>
@@ -111,7 +111,7 @@
     [error]="[] | tuiFieldError | async"
   ></tui-error>
 
-  @if (linkForm.getHasExpire().value) {
+  @if (getLinkForm().getHasExpire().value) {
   <div class="inline-group">
     <p>До:</p>
     <tui-textfield class="wide">
@@ -119,7 +119,7 @@
         tuiInputDateTime
         formControlName="expire"
         appTakeValidators
-        [validatorsMap]="linkForm.getValidators()"
+        [validatorsMap]="getLinkForm().getValidators()"
       />
       <tui-calendar *tuiTextfieldDropdown />
     </tui-textfield>
@@ -136,18 +136,18 @@
       type="checkbox"
       formControlName="has_metadata"
       appTakeValidators
-      [validatorsMap]="linkForm.getValidators()"
+      [validatorsMap]="getLinkForm().getValidators()"
     />
     Добавить метаданные
   </label>
-  @if (linkForm.getHasMetadata().value) {
+  @if (getLinkForm().getHasMetadata().value) {
   <tui-textfield>
     <label tuiLabel htmlFor="name">Название</label>
     <input
       formControlName="name"
       tuiTextfield
       appTakeValidators
-      [validatorsMap]="linkForm.getValidators()"
+      [validatorsMap]="getLinkForm().getValidators()"
     />
   </tui-textfield>
   <tui-error
@@ -160,7 +160,7 @@
       formControlName="description"
       tuiTextarea
       appTakeValidators
-      [validatorsMap]="linkForm.getValidators()"
+      [validatorsMap]="getLinkForm().getValidators()"
     ></textarea>
   </tui-textfield>
   <tui-error
