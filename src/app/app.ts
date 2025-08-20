@@ -2,7 +2,6 @@ import { TuiButton, TuiRoot } from '@taiga-ui/core';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ServiceToken } from './services/tokens';
-import { MockedLinkService } from './services/mocked-link-service/mocked-link-service';
 import { DomainProvider } from './services/domain-provider/domain-provider';
 import { AuthProvider } from './services/auth-provider/auth-provider';
 import { AvailableServicesProvider } from './services/available-services-provider/available-services-provider';

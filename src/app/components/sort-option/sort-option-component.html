@@ -1,0 +1,56 @@
+<button
+  tuiButton
+  appearance="outline"
+  class="icon-button"
+  size="m"
+  [tuiDropdown]="dropdown"
+  [(tuiDropdownOpen)]="areOptionsOpened"
+>
+  <img src="svg/sort.svg" alt="Sort by" />
+  {{ mapSortCriteriaToName(sortCriteria.value) }}
+</button>
+<ng-template #dropdown>
+  <div class="item-list">
+    <b>Критерий сортировки:</b>
+    <div tuiGroup orientation="vertical">
+      <label tuiBlock="s">
+        <input
+          tuiBlock
+          type="radio"
+          [formControl]="sortCriteria"
+          value="name"
+        />
+        {{ mapSortCriteriaToName("name") }}
+      </label>
+      <label tuiBlock="s">
+        <input
+          tuiBlock
+          type="radio"
+          [formControl]="sortCriteria"
+          value="create_date"
+        />
+        {{ mapSortCriteriaToName("create_date") }}
+      </label>
+      <label tuiBlock="s">
+        <input
+          tuiBlock
+          type="radio"
+          [formControl]="sortCriteria"
+          value="update_date"
+        />
+        {{ mapSortCriteriaToName("update_date") }}
+      </label>
+    </div>
+    <b>Тип сортировки:</b>
+    <div tuiGroup orientation="vertical">
+      <label tuiBlock="s">
+        По возрастанию
+        <input tuiBlock type="radio" [formControl]="sortType" value="asc" />
+      </label>
+      <label tuiBlock="s">
+        По убыванию
+        <input tuiBlock type="radio" [formControl]="sortType" value="desc" />
+      </label>
+    </div>
+  </div>
+</ng-template>

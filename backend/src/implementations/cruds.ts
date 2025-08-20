@@ -57,40 +57,22 @@ export class UserRepository
       });
   }
 
-  public update(item: UID<User>): Promise<UID<Omit<User, 'password'>>> {
-    if (item.item.email) {
-      return this.sql<RawUser[]>`
-        update USERS
-        set login = ${item.item.login}, email = ${item.item.email}, password = ${item.item.password}
-        where user_id = ${item.id}
-        returning *;
-      `
-        .then((userList) => {
-          if (userList[0]) {
-            return this.mapUser(userList[0]);
-          }
-          throw new Error('Ошибка на стороне базы данных.');
-        })
-        .catch(() => {
-          throw new Error('Ошибка на стороне базы данных.');
-        });
-    } else {
-      return this.sql<RawUser[]>`
-        update USERS
-        set login = ${item.item.login}, password = ${item.item.password}
-        where user_id = ${item.id}
-        returning *;
-      `
-        .then((userList) => {
-          if (userList[0]) {
-            return this.mapUser(userList[0]);
-          }
-          throw new Error('Ошибка на стороне базы данных.');
-        })
-        .catch(() => {
-          throw new Error('Ошибка на стороне базы данных.');
-        });
-    }
+  public update(item: UID<Omit<User, 'password'> & Partial<Pick<User, 'password'>>>): Promise<UID<Omit<User, 'password'>>> {
+    return this.sql.unsafe<RawUser[]>(`
+      update USERS
+      set login = '${item.item.login}'${ item.item.email ? ", email = '" + item.item.email + "'" : ""}${item.item.password ? ", password = '" + item.item.password + "'" : ""}
+      where user_id = ${item.id}
+      returning *;
+    `)
+      .then((userList) => {
+        if (userList[0]) {
+          return this.mapUser(userList[0]);
+        }
+        throw new Error('Ошибка на стороне базы данных.');
+      })
+      .catch(() => {
+        throw new Error('Ошибка на стороне базы данных.');
+      });
   }
 
   public async delete(id: number): Promise<void> {
@@ -118,12 +100,12 @@ export class LinkRepository
         type: raw.type,
         short_id: raw.short_id,
         has_expire: raw.expire !== null,
-        expire: new Date(raw.expire),
+        expire: raw.expire ? raw.expire : undefined,
         has_metadata: raw.name !== null && raw.description !== null,
-        name: raw.name,
-        description: raw.description,
-        create_date: new Date(raw.create_date),
-        update_date: raw.update_date ? new Date(raw.update_date) : undefined,
+        name: raw.name ? raw.name : undefined,
+        description: raw.description ? raw.description : undefined,
+        create_date: raw.create_date,
+        update_date: raw.update_date ? raw.update_date : undefined,
         owner: raw.owner,
       },
     };
@@ -135,7 +117,7 @@ export class LinkRepository
 
     if (item.has_expire) {
       columns.push('expire');
-      values.push(String(item.expire));
+      values.push(item.expire!);
     }
 
     if (item.has_metadata && item.name && item.description) {
@@ -217,7 +199,7 @@ export class LinkRepository
   public update(item: UID<Link>): Promise<UID<Link>> {
     return this.sql.unsafe<RawLink[]>(`
       update LINKS
-        set update_date = now(), full_link = '${item.item.full_link}', type = '${item.item.type}', short_id = ${item.item.short_id!}${ item.item.has_expire ? ", expire = '" + item.item.expire + "', " : ""}${ item.item.has_metadata && item.item.name && item.item.description ? ", name = '" + item.item.name + "', description = '" + item.item.description + "'" : ""}
+        set update_date = now(), full_link = '${item.item.full_link}', type = '${item.item.type}', short_id = '${item.item.short_id!}'${ item.item.has_expire ? ", expire = '" + item.item.expire + "'" : ""}, name = ${item.item.has_metadata ? `'${item.item.name}'` : "null"}, description = ${item.item.has_metadata ? `'${item.item.description}'` : "null"}
         where link_id = ${item.id}
         returning *;
     `).then((linkList) => {
