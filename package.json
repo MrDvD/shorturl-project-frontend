@@ -7,7 +7,7 @@
     "build": "nx build",
     "test": "jest",
     "lint": "eslint src",
-    "style": "prettier src --write"
+    "style": "prettier src -c"
   },
   "private": true,
   "dependencies": {
