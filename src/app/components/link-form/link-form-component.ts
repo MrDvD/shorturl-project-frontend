@@ -34,7 +34,7 @@ import { isErrorResponse, UID, User } from '../../common/types';
 import { DomainService } from '../../services/domain-service/domain-service';
 import { TuiDay, TuiTime } from '@taiga-ui/cdk';
 import { HttpErrorResponse } from '@angular/common/http';
-import { showError } from '../../services/alerts';
+import { showError, showInfo } from '../../services/alerts';
 
 @Component({
   selector: 'app-link-form-component',
@@ -174,6 +174,10 @@ export class LinkFormComponent implements OnInit {
     const link = this.resultLink.value;
     if (link) {
       navigator.clipboard.writeText(link);
+      showInfo(
+        'Ссылка скопирована в буфер обмена',
+        this.alertService
+      ).subscribe();
     }
   }
 
