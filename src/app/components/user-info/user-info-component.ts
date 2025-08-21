@@ -23,6 +23,7 @@ import { isErrorResponse, UID, User } from '../../common/types';
 import { AuthService } from '../../services/auth-service/auth-service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { showError } from '../../services/alerts';
+import { ChangePasswordFormComponent } from '../change-password-form/change-password-form-component';
 
 @Component({
   selector: 'app-user-info-component',
@@ -36,6 +37,7 @@ import { showError } from '../../services/alerts';
     TuiDialog,
     TuiError,
     TuiFieldErrorPipe,
+    ChangePasswordFormComponent,
   ],
   templateUrl: './user-info-component.html',
   styleUrl: './user-info-component.less',
@@ -145,7 +147,7 @@ export class UserInfoComponent {
     }
   }
 
-  public openChangePasswordDialog(): void {
-    this.isChangePasswordOpened = true;
+  public setChangePasswordDialog(value: boolean): void {
+    this.isChangePasswordOpened = value;
   }
 }

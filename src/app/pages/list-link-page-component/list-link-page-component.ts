@@ -9,6 +9,7 @@ import { SortOptionComponent } from '../../components/sort-option/sort-option-co
 import { SortParams } from '../../components/sort-option/types.util';
 import { map } from 'rxjs';
 import { BehaviorSubject, combineLatest } from 'rxjs';
+import { TuiAlertService } from '@taiga-ui/core';
 
 @Component({
   selector: 'app-list-link-page-component',
@@ -26,6 +27,7 @@ export class ListLinkPageComponent {
   private readonly linksService = inject(ServiceToken.LINK_SERVICE);
   private readonly route = inject(ActivatedRoute);
   private readonly authProvider = inject(AuthService);
+  private readonly alertService = inject(TuiAlertService);
   protected title = this.route.snapshot.data['title'];
   private readonly sortParamsSubject = new BehaviorSubject<SortParams>({
     criteria: 'create_date',

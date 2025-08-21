@@ -67,6 +67,7 @@ export class LinkFormComponent implements OnInit {
   private readonly user = inject(AuthService).getCurrentUser();
   protected readonly domain = inject(DomainService).getApiDomain();
   protected resultLink = new FormControl<string | null>('');
+  protected readonly today = TuiDay.fromLocalNativeDate(new Date());
   private readonly formatLink = new FormatLinkPipe();
   protected isSent = signal(false);
   private linkForm: LinkForm | null = null;

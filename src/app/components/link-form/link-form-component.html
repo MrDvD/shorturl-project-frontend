@@ -119,6 +119,7 @@
         tuiInputDateTime
         formControlName="expire"
         appTakeValidators
+        [min]="today"
         [validatorsMap]="getLinkForm().getValidators()"
       />
       <tui-calendar *tuiTextfieldDropdown />

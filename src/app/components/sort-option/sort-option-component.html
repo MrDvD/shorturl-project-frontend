@@ -6,8 +6,11 @@
   [tuiDropdown]="dropdown"
   [(tuiDropdownOpen)]="areOptionsOpened"
 >
-  <img src="svg/sort.svg" alt="Sort by" />
-  {{ mapSortCriteriaToName(sortCriteria.value) }}
+  @if (sortType.value === 'asc') {
+  <img src="svg/sort-asc.svg" alt="Sort ascending" />
+  } @else {
+  <img src="svg/sort-desc.svg" alt="Sort descending" />
+  } {{ mapSortCriteriaToName(sortCriteria.value) }}
 </button>
 
 <ng-template #dropdown>
