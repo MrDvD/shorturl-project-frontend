@@ -7,6 +7,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { TuiCardLarge } from '@taiga-ui/layout';
 import {
+  TuiAlertService,
   TuiAppearance,
   TuiButton,
   TuiDataList,
@@ -23,6 +24,7 @@ import { WasUpdatedPipe } from '../../pipes/was-updated/was-updated-pipe';
 import { FormatLinkPipe } from '../../pipes/format-link/format-link-pipe';
 import { ServiceToken } from '../../services/tokens';
 import { take } from 'rxjs';
+import { showInfo, showSuccess } from '../../services/alerts';
 
 @Component({
   selector: 'app-link-info-component',
@@ -49,6 +51,7 @@ import { take } from 'rxjs';
 export class LinkInfoComponent {
   @Input({ required: true }) link: UID<Link> | null = null;
   private linkService = inject(ServiceToken.LINK_SERVICE);
+  private alertService = inject(TuiAlertService);
   private formatLink = new FormatLinkPipe();
   protected isMenuOpened = false;
   protected isEditOpened = false;
@@ -56,12 +59,20 @@ export class LinkInfoComponent {
   public copyShortLink(): void {
     if (this.link) {
       navigator.clipboard.writeText(this.formatLink.transform(this.link.item));
+      showInfo(
+        'Короткая ссылка скопирована в буфер обмена',
+        this.alertService
+      ).subscribe();
     }
   }
 
   public copyFullLink(): void {
     if (this.link) {
       navigator.clipboard.writeText(this.link.item.full_link);
+      showInfo(
+        'Полная ссылка скопирована в буфер обмена',
+        this.alertService
+      ).subscribe();
     }
   }
 
@@ -91,6 +102,9 @@ export class LinkInfoComponent {
       .delete(this.link.id)
       .pipe(take(1))
       .subscribe({
+        next: () => {
+          showSuccess('Ссылка успешно удалена', this.alertService).subscribe();
+        },
         error: (error) => {
           console.error('Error removing link:', error);
         },

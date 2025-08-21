@@ -12,3 +12,25 @@ export function showError(
     appearance: 'negative',
   });
 }
+
+export function showSuccess(
+  message: string,
+  alert: TuiAlertService
+): Observable<void> {
+  return alert.open(message, {
+    label: 'Успех',
+    autoClose: 3000,
+    appearance: 'success',
+  });
+}
+
+export function showInfo(
+  message: string,
+  alert: TuiAlertService
+): Observable<void> {
+  return alert.open(message, {
+    label: 'Информация',
+    autoClose: 3000,
+    appearance: 'info',
+  });
+}

@@ -22,7 +22,7 @@ import { TuiFieldErrorPipe } from '@taiga-ui/kit';
 import { isErrorResponse, UID, User } from '../../common/types';
 import { AuthService } from '../../services/auth-service/auth-service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { showError } from '../../services/alerts';
+import { showError, showSuccess } from '../../services/alerts';
 import { ChangePasswordFormComponent } from '../change-password-form/change-password-form-component';
 
 @Component({
@@ -108,6 +108,7 @@ export class UserInfoComponent {
           this.user = updatedUser;
           this.previousEmail = this.email.value;
           this.resetEmail();
+          showSuccess('Email успешно изменен', this.alertService).subscribe();
         },
         error: (error: HttpErrorResponse) => {
           if (isErrorResponse(error.error)) {

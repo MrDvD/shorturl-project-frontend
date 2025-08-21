@@ -7,6 +7,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { ChangePasswordForm } from './change-password.form';
 import {
+  TuiAlertService,
   TuiAppearance,
   TuiButton,
   TuiError,
@@ -17,6 +18,7 @@ import { TuiFieldErrorPipe } from '@taiga-ui/kit';
 import { TuiForm } from '@taiga-ui/layout';
 import { ServiceToken } from '../../services/tokens';
 import { AuthService } from '../../services/auth-service/auth-service';
+import { showSuccess } from '../../services/alerts';
 
 @Component({
   selector: 'app-change-password-form-component',
@@ -36,6 +38,7 @@ import { AuthService } from '../../services/auth-service/auth-service';
 })
 export class ChangePasswordFormComponent {
   private readonly userService = inject(ServiceToken.USER_SERVICE);
+  private readonly alertService = inject(TuiAlertService);
   private readonly authService = inject(AuthService);
   protected isOpened = output<boolean>();
   changePasswordForm = new ChangePasswordForm();
@@ -58,6 +61,10 @@ export class ChangePasswordFormComponent {
         .subscribe({
           next: () => {
             this.isOpened.emit(false);
+            showSuccess(
+              'Пароль успешно изменен',
+              this.alertService
+            ).subscribe();
           },
         });
     } else {
