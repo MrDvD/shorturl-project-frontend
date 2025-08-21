@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
+  TuiAlertService,
   TuiAppearance,
   TuiButton,
   TuiError,
@@ -27,10 +28,13 @@ import { TuiForm } from '@taiga-ui/layout';
 import { ServiceToken } from '../../services/tokens';
 import { take } from 'rxjs';
 import { FormatLinkPipe } from '../../pipes/format-link/format-link-pipe';
-import { TakeValidators } from '../../directives/take-validators/edit-link-form-directive';
-import { AuthProvider } from '../../services/auth-provider/auth-provider';
-import { UID, User } from '../../common/types';
-import { DomainProvider } from '../../services/domain-provider/domain-provider';
+import { TakeValidators } from '../../directives/take-validators/take-validators-directive';
+import { AuthService } from '../../services/auth-service/auth-service';
+import { isErrorResponse, UID, User } from '../../common/types';
+import { DomainService } from '../../services/domain-service/domain-service';
+import { TuiDay, TuiTime } from '@taiga-ui/cdk';
+import { HttpErrorResponse } from '@angular/common/http';
+import { showError } from '../../services/alerts';
 
 @Component({
   selector: 'app-link-form-component',
@@ -58,19 +62,39 @@ import { DomainProvider } from '../../services/domain-provider/domain-provider';
   standalone: true,
 })
 export class LinkFormComponent implements OnInit {
-  protected linkForm = new LinkForm();
-  protected resultLink = new FormControl<string | null>('');
-  protected formAppearance = 'floating';
   private readonly linkService = inject(ServiceToken.LINK_SERVICE);
-  private readonly authProvider = inject(AuthProvider);
-  private readonly user = this.authProvider.getCurrentUser();
+  private readonly alertService = inject(TuiAlertService);
+  private readonly user = inject(AuthService).getCurrentUser();
+  protected readonly domain = inject(DomainService).getApiDomain();
+  protected resultLink = new FormControl<string | null>('');
+  protected readonly today = TuiDay.fromLocalNativeDate(new Date());
   private readonly formatLink = new FormatLinkPipe();
-  protected readonly domain = inject(DomainProvider).getApiDomain();
+  protected isSent = signal(false);
+  private linkForm: LinkForm | null = null;
+  protected formAppearance = 'floating';
   sendMethod: 'POST' | 'PUT' = 'POST';
   link_id: number | null = null;
-  protected isSent = signal(false);
 
   ngOnInit(): void {
+    if (!this.user) {
+      const nextMonth = new Date();
+      nextMonth.setMonth(nextMonth.getMonth() + 1);
+      this.linkForm = new LinkForm({
+        type: 'short',
+        has_expire: true,
+        expire: [
+          TuiDay.fromLocalNativeDate(nextMonth),
+          TuiTime.fromLocalNativeDate(nextMonth),
+        ],
+        has_metadata: false,
+      });
+      this.getLinkForm().getType().disable();
+      this.getLinkForm().getHasExpire().disable();
+      this.getLinkForm().getExpire().disable();
+      this.getLinkForm().getHasMetadata().disable();
+    } else {
+      this.linkForm = new LinkForm();
+    }
     this.newForm();
   }
 
@@ -82,7 +106,7 @@ export class LinkFormComponent implements OnInit {
   }
 
   public sendForm(): void {
-    const link = this.linkForm.getLink();
+    const link = this.getLinkForm().getLink();
     if (link) {
       const signedLink = {
         ...link,
@@ -98,8 +122,12 @@ export class LinkFormComponent implements OnInit {
                 this.resultLink.setValue(this.formatLink.transform(uid.item));
                 this.isSent.set(true);
               },
-              error: (error) => {
-                console.error('Error creating link:', error);
+              error: (error: HttpErrorResponse) => {
+                if (isErrorResponse(error.error)) {
+                  showError(error.error, this.alertService).subscribe();
+                } else {
+                  showError(error, this.alertService).subscribe();
+                }
               },
             });
           break;
@@ -115,36 +143,30 @@ export class LinkFormComponent implements OnInit {
                 this.resultLink.setValue(this.formatLink.transform(uid.item));
                 this.isSent.set(true);
               },
-              error: (error) => {
-                console.error('Error creating link:', error);
+              error: (error: HttpErrorResponse) => {
+                if (isErrorResponse(error.error)) {
+                  showError(error.error, this.alertService).subscribe();
+                } else {
+                  showError(error, this.alertService).subscribe();
+                }
               },
             });
           break;
       }
     } else {
-      this.linkForm.markAllAsTouched();
+      this.getLinkForm().markAllAsTouched();
     }
   }
 
   public getLinkForm(): LinkForm {
-    return this.linkForm;
+    if (this.linkForm) {
+      return this.linkForm;
+    }
+    throw new Error('Link form is not initialized');
   }
 
   public newForm(): void {
-    if (this.user) {
-      this.linkForm.reset();
-    } else {
-      const nextMonth = new Date();
-      nextMonth.setMonth(nextMonth.getMonth() + 1);
-      this.linkForm.getType().disable();
-      this.linkForm.getHasExpire().disable();
-      this.linkForm.getExpire().disable();
-      this.linkForm.patchValue({
-        type: 'short',
-        has_expire: true,
-        // expire: TuiDay.fromLocalNativeDate(nextMonth),
-      });
-    }
+    this.getLinkForm().reset();
     this.isSent.set(false);
   }
 

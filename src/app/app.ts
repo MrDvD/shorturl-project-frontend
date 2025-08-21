@@ -2,9 +2,9 @@ import { TuiButton, TuiRoot } from '@taiga-ui/core';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ServiceToken } from './services/tokens';
-import { DomainProvider } from './services/domain-provider/domain-provider';
-import { AuthProvider } from './services/auth-provider/auth-provider';
-import { AvailableServicesProvider } from './services/available-services-provider/available-services-provider';
+import { DomainService } from './services/domain-service/domain-service';
+import { AuthService } from './services/auth-service/auth-service';
+import { AvailablePagesService } from './services/available-pages-service/available-pages-service';
 import { UID, User } from './common/types';
 import { ApiUserService } from './services/api-user-service/api-user-service';
 import { ApiLinkService } from './services/api-link-service/api-link-service';
@@ -17,7 +17,7 @@ import { ApiLinkService } from './services/api-link-service/api-link-service';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    AuthProvider,
+    AuthService,
     {
       provide: ServiceToken.LINK_SERVICE,
       useClass: ApiLinkService,
@@ -26,12 +26,12 @@ import { ApiLinkService } from './services/api-link-service/api-link-service';
       provide: ServiceToken.USER_SERVICE,
       useClass: ApiUserService,
     },
-    DomainProvider,
-    AvailableServicesProvider,
+    DomainService,
+    AvailablePagesService,
   ],
 })
 export class App {
-  private readonly authProvider = inject(AuthProvider);
+  private readonly authProvider = inject(AuthService);
   protected readonly user = this.authProvider.getCurrentUser();
 
   public getUser(): UID<Omit<User, 'password'>> {

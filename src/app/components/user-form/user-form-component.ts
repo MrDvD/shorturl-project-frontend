@@ -6,6 +6,7 @@ import {
   TuiButton,
   TuiError,
   TuiAppearance,
+  TuiAlertService,
 } from '@taiga-ui/core';
 import { UserForm, UserFormMode } from './user.form';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -13,7 +14,10 @@ import { TuiFieldErrorPipe } from '@taiga-ui/kit';
 import { RouterLink } from '@angular/router';
 import { ServiceToken } from '../../services/tokens';
 import { take } from 'rxjs';
-import { AuthProvider } from '../../services/auth-provider/auth-provider';
+import { AuthService } from '../../services/auth-service/auth-service';
+import { showError } from '../../services/alerts';
+import { isErrorResponse } from '../../common/types';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-user-form-component',
@@ -32,9 +36,10 @@ import { AuthProvider } from '../../services/auth-provider/auth-provider';
   styleUrl: './user-form-component.less',
 })
 export class UserFormComponent {
-  private _userFormMode: UserFormMode = 'login';
   private readonly userService = inject(ServiceToken.USER_SERVICE);
-  private readonly authProvider = inject(AuthProvider);
+  private readonly authProvider = inject(AuthService);
+  private readonly alertService = inject(TuiAlertService);
+  private _userFormMode: UserFormMode = 'login';
 
   @Input({ required: true })
   set userFormMode(value: UserFormMode) {
@@ -61,8 +66,12 @@ export class UserFormComponent {
                 this.authProvider.setCurrentUser(newUser);
                 window.location.href = '/';
               },
-              error: (error) => {
-                console.error(error.message);
+              error: (error: HttpErrorResponse) => {
+                if (isErrorResponse(error.error)) {
+                  showError(error.error, this.alertService).subscribe();
+                } else {
+                  showError(error, this.alertService).subscribe();
+                }
               },
             });
           break;
@@ -76,8 +85,12 @@ export class UserFormComponent {
                 this.authProvider.setCurrentUser(newUser);
                 window.location.href = '/';
               },
-              error: (error) => {
-                console.error(error.message);
+              error: (error: HttpErrorResponse) => {
+                if (isErrorResponse(error.error)) {
+                  showError(error.error, this.alertService).subscribe();
+                } else {
+                  showError(error, this.alertService).subscribe();
+                }
               },
             });
           break;

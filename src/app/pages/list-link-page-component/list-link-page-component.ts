@@ -4,11 +4,12 @@ import { LinkInfoComponent } from '../../components/link-info/link-info-componen
 import { ActivatedRoute } from '@angular/router';
 import { ToServicesComponent } from '../../components/to-services/to-services-component';
 import { ServiceToken } from '../../services/tokens';
-import { AuthProvider } from '../../services/auth-provider/auth-provider';
+import { AuthService } from '../../services/auth-service/auth-service';
 import { SortOptionComponent } from '../../components/sort-option/sort-option-component';
 import { SortParams } from '../../components/sort-option/types.util';
 import { map } from 'rxjs';
 import { BehaviorSubject, combineLatest } from 'rxjs';
+import { TuiAlertService } from '@taiga-ui/core';
 
 @Component({
   selector: 'app-list-link-page-component',
@@ -25,7 +26,8 @@ import { BehaviorSubject, combineLatest } from 'rxjs';
 export class ListLinkPageComponent {
   private readonly linksService = inject(ServiceToken.LINK_SERVICE);
   private readonly route = inject(ActivatedRoute);
-  private readonly authProvider = inject(AuthProvider);
+  private readonly authProvider = inject(AuthService);
+  private readonly alertService = inject(TuiAlertService);
   protected title = this.route.snapshot.data['title'];
   private readonly sortParamsSubject = new BehaviorSubject<SortParams>({
     criteria: 'create_date',
@@ -36,14 +38,13 @@ export class ListLinkPageComponent {
     this.linksService.readAll(
       this.authProvider.getCurrentUser()?.item.login || ''
     ),
-    this.sortParamsSubject.asObservable(),
+    this.sortParamsSubject,
   ]).pipe(
-    map(([links, sortParams]) => {
-      const criteria = sortParams.criteria;
-      const type = sortParams.type === 'asc' ? 1 : -1;
+    map(([links, { criteria, type: sortType }]) => {
+      const type = sortType === 'asc' ? 1 : -1;
       return links.sort((a, b) => {
-        if (a.item[criteria] === undefined || b.item[criteria] === undefined) {
-          return 0;
+        if (!a.item[criteria] || !b.item[criteria]) {
+          return -1;
         }
         if (a.item[criteria] < b.item[criteria]) return -1 * type;
         if (a.item[criteria] > b.item[criteria]) return 1 * type;

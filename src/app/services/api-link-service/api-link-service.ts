@@ -1,14 +1,25 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { DomainProvider } from '../domain-provider/domain-provider';
+import { DomainService } from '../domain-service/domain-service';
 import { ReadableRepository } from '../interfaces';
-import { Link, UID } from '../../common/types';
-import { BehaviorSubject, map, Observable, take, tap } from 'rxjs';
+import { isErrorResponse, Link, UID } from '../../common/types';
+import {
+  BehaviorSubject,
+  catchError,
+  map,
+  Observable,
+  of,
+  take,
+  tap,
+} from 'rxjs';
+import { showError } from '../alerts';
+import { TuiAlertService } from '@taiga-ui/core';
 
 @Injectable()
 export class ApiLinkService implements ReadableRepository<Link, string> {
   private readonly http = inject(HttpClient);
-  private readonly domainProvider = inject(DomainProvider);
+  private readonly domainProvider = inject(DomainService);
+  private readonly alertService = inject(TuiAlertService);
   private readonly cachedLinks = new BehaviorSubject<UID<Link>[]>([]);
 
   read(id: number): Observable<UID<Link>> {
@@ -55,8 +66,17 @@ export class ApiLinkService implements ReadableRepository<Link, string> {
         ),
         take(1)
       )
-      .subscribe((links) => {
-        this.cachedLinks.next(links);
+      .subscribe({
+        next: (links) => {
+          this.cachedLinks.next(links);
+        },
+        error: (error: HttpErrorResponse) => {
+          if (isErrorResponse(error.error)) {
+            showError(error.error, this.alertService).subscribe();
+          } else {
+            showError(error, this.alertService).subscribe();
+          }
+        },
       });
     return this.cachedLinks;
   }
@@ -114,6 +134,14 @@ export class ApiLinkService implements ReadableRepository<Link, string> {
         withCredentials: true,
       })
       .pipe(
+        catchError((error: HttpErrorResponse) => {
+          if (isErrorResponse(error.error)) {
+            showError(error.error, this.alertService).subscribe();
+          } else {
+            showError(error, this.alertService).subscribe();
+          }
+          return of();
+        }),
         tap(() => {
           this.cachedLinks.next(
             this.cachedLinks.getValue().filter((link) => link.id !== id)

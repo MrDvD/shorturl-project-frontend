@@ -27,7 +27,13 @@
     [error]="[] | tuiFieldError | async"
   ></tui-error>
   <div class="inline-group">
-    <button tuiButton appearance="primary" class="wide" type="button">
+    <button
+      tuiButton
+      appearance="primary"
+      class="wide"
+      type="button"
+      (click)="setChangePasswordDialog(true)"
+    >
       Смена пароля
     </button>
     <button
@@ -41,7 +47,10 @@
     </button>
   </div>
 </form>
-<ng-template [(tuiDialog)]="isRemoveOpened">
+<ng-template
+  [(tuiDialog)]="isRemoveOpened"
+  (changePassword)="openRemoveDialog($event)"
+>
   <div class="centered-dialog">
     <button
       tuiButton
@@ -53,4 +62,9 @@
       Подтверждаю удаление аккаунта
     </button>
   </div>
+</ng-template>
+<ng-template [(tuiDialog)]="isChangePasswordOpened">
+  <app-change-password-form-component
+    (isOpened)="setChangePasswordDialog($event)"
+  ></app-change-password-form-component>
 </ng-template>

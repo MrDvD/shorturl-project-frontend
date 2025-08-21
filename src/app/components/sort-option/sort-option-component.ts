@@ -26,7 +26,7 @@ export class SortOptionComponent {
   sortChange = output<SortParams>();
 
   protected areOptionsOpened = false;
-  protected sortType = new DecoratedFormControl<'asc' | 'desc'>('asc', {
+  protected sortType = new DecoratedFormControl<'asc' | 'desc'>('desc', {
     nonNullable: true,
   });
   protected sortCriteria = new DecoratedFormControl<SortCriteria>(

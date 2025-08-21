@@ -1,11 +1,11 @@
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateFn, Router } from '@angular/router';
-import { AuthProvider } from './auth-provider';
+import { AuthService } from './auth-service';
 
 export const canActivateUserRouteGuard: CanActivateFn = (
   snapshot: ActivatedRouteSnapshot
 ) => {
-  const authProvider = inject(AuthProvider);
+  const authProvider = inject(AuthService);
   const router = inject(Router);
 
   const loginParam = snapshot.paramMap.get('login');
@@ -21,7 +21,7 @@ export const canActivateUserRouteGuard: CanActivateFn = (
 };
 
 export const canActivateGuestRouteGuard: CanActivateFn = () => {
-  const authProvider = inject(AuthProvider);
+  const authProvider = inject(AuthService);
   const router = inject(Router);
 
   const user = authProvider.getCurrentUser();

@@ -1,13 +1,13 @@
 import { inject, Pipe, PipeTransform } from '@angular/core';
 import { Link } from '../../common/types';
-import { DomainProvider } from '../../services/domain-provider/domain-provider';
+import { DomainService } from '../../services/domain-service/domain-service';
 import { formatLink } from './format.util';
 
 @Pipe({
   name: 'formatLink',
 })
 export class FormatLinkPipe implements PipeTransform {
-  private domain = inject(DomainProvider).getApiDomain();
+  private domain = inject(DomainService).getApiDomain();
 
   transform(link: Link, includeDomain = true): string {
     if (includeDomain) {
