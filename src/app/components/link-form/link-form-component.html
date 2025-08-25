@@ -1,0 +1,198 @@
+@if (!isSent()) {
+<form
+  tuiForm="l"
+  [formGroup]="getLinkForm()"
+  [tuiAppearance]="formAppearance"
+  class="app-form link"
+  (ngSubmit)="sendForm()"
+>
+  <div class="inline-group">
+    <tui-textfield class="wide">
+      <label tuiLabel htmlFor="full_link">Вставьте ссылку</label>
+      <input
+        formControlName="full_link"
+        tuiTextfield
+        appTakeValidators
+        [validatorsMap]="getLinkForm().getValidators()"
+      />
+    </tui-textfield>
+    <button tuiButton appearance="primary" type="submit" class="submit-button">
+      <img src="svg/right-arrow.svg" alt="Send" />
+    </button>
+  </div>
+  <tui-error
+    formControlName="full_link"
+    [error]="[] | tuiFieldError | async"
+  ></tui-error>
+
+  @if (getLinkForm().getFullLink().valid) {
+  <div class="inline-group">
+    <p>Тип ссылки:</p>
+    <div tuiGroup class="wide">
+      <label tuiBlock>
+        сокращенная
+        <input
+          type="radio"
+          tuiBlock
+          value="short"
+          formControlName="type"
+          appTakeValidators
+          [validatorsMap]="getLinkForm().getValidators()"
+        />
+      </label>
+      <label tuiBlock>
+        именованная
+        <input
+          type="radio"
+          tuiBlock
+          value="named"
+          formControlName="type"
+          appTakeValidators
+          [validatorsMap]="getLinkForm().getValidators()"
+        />
+      </label>
+    </div>
+  </div>
+  <tui-error
+    formControlName="type"
+    [error]="[] | tuiFieldError | async"
+  ></tui-error>
+
+  @if (getLinkForm().getType().value === 'named') {
+  <div class="inline-group">
+    <p>{{ domain }}/{{ getUser().item.login }}/</p>
+    <label class="wide">
+      <tui-textfield>
+        <input
+          formControlName="short_id"
+          placeholder="link"
+          tuiTextfield
+          appTakeValidators
+          [validatorsMap]="getLinkForm().getValidators()"
+        />
+      </tui-textfield>
+    </label>
+  </div>
+  <tui-error
+    formControlName="short_id"
+    [error]="[] | tuiFieldError | async"
+  ></tui-error>
+  }
+
+  <div class="inline-group">
+    <p>Срок жизни:</p>
+    <div tuiGroup class="wide">
+      <label tuiBlock>
+        бессрочно
+        <input
+          type="radio"
+          tuiBlock
+          [value]="false"
+          formControlName="has_expire"
+          appTakeValidators
+          [validatorsMap]="getLinkForm().getValidators()"
+        />
+      </label>
+      <label tuiBlock>
+        временно
+        <input
+          type="radio"
+          tuiBlock
+          [value]="true"
+          formControlName="has_expire"
+          appTakeValidators
+          [validatorsMap]="getLinkForm().getValidators()"
+        />
+      </label>
+    </div>
+  </div>
+  <tui-error
+    formControlName="has_expire"
+    [error]="[] | tuiFieldError | async"
+  ></tui-error>
+
+  @if (getLinkForm().getHasExpire().value) {
+  <div class="inline-group">
+    <p>До:</p>
+    <tui-textfield class="wide">
+      <input
+        tuiInputDateTime
+        formControlName="expire"
+        appTakeValidators
+        [min]="today"
+        [validatorsMap]="getLinkForm().getValidators()"
+      />
+      <tui-calendar *tuiTextfieldDropdown />
+    </tui-textfield>
+  </div>
+  <tui-error
+    formControlName="expire"
+    [error]="[] | tuiFieldError | async"
+  ></tui-error>
+  }
+  <label class="inline-group">
+    <input
+      size="m"
+      tuiCheckbox
+      type="checkbox"
+      formControlName="has_metadata"
+      appTakeValidators
+      [validatorsMap]="getLinkForm().getValidators()"
+    />
+    Добавить метаданные
+  </label>
+  @if (getLinkForm().getHasMetadata().value) {
+  <tui-textfield>
+    <label tuiLabel htmlFor="name">Название</label>
+    <input
+      formControlName="name"
+      tuiTextfield
+      appTakeValidators
+      [validatorsMap]="getLinkForm().getValidators()"
+    />
+  </tui-textfield>
+  <tui-error
+    formControlName="name"
+    [error]="[] | tuiFieldError | async"
+  ></tui-error>
+  <tui-textfield>
+    <label tuiLabel htmlFor="description">Описание</label>
+    <textarea
+      formControlName="description"
+      tuiTextarea
+      appTakeValidators
+      [validatorsMap]="getLinkForm().getValidators()"
+    ></textarea>
+  </tui-textfield>
+  <tui-error
+    formControlName="description"
+    [error]="[] | tuiFieldError | async"
+  ></tui-error>
+  } }
+</form>
+} @else {
+<form tuiForm="l" class="app-form link" tuiAppearance="floating">
+  <div class="inline-group">
+    <tui-textfield class="wide">
+      <label htmlFor="resultLink">Скопируйте результат</label>
+      <input tuiTextfield [formControl]="resultLink" [readOnly]="true" />
+    </tui-textfield>
+    <button
+      tuiButton
+      appearance="primary"
+      type="button"
+      class="submit-button"
+      (click)="copyLink()"
+    >
+      <img src="svg/copy.svg" alt="Copy" />
+    </button>
+  </div>
+  @if (sendMethod === 'POST') {
+  <div class="inline-group">
+    <button tuiButton appearance="secondary" class="wide" (click)="newForm()">
+      Создать новую ссылку
+    </button>
+  </div>
+  }
+</form>
+}

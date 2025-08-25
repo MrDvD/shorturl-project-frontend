@@ -1,0 +1,77 @@
+<div tuiCardLarge tuiAppearance="outline" class="link-info-card">
+  <header class="link-info-header">
+    <h4>{{ getLink().item.name ?? 'Сокращенная ссылка' }}</h4>
+    <button
+      class="menu-button"
+      tuiButton
+      appearance="flat"
+      size="s"
+      [tuiDropdown]="dropdown"
+      [(tuiDropdownOpen)]="isMenuOpened"
+    >
+      <img src="svg/menu.svg" alt="Menu" />
+    </button>
+  </header>
+  @if (getLink().item.description) {
+  <p>{{ getLink().item.description }}</p>
+  }
+  <footer class="link-info-footer">
+    <tui-textfield class="wide" tuiTextfieldSize="s">
+      <input
+        type="text"
+        [readOnly]="true"
+        tuiTextfield
+        value="{{ getLink().item | formatLink }}"
+      />
+    </tui-textfield>
+    <button
+      tuiButton
+      appearance="flat"
+      size="s"
+      type="button"
+      (click)="copyShortLink()"
+    >
+      <img src="svg/copy.svg" alt="Copy" />
+    </button>
+    <button
+      tuiButton
+      appearance="flat"
+      size="s"
+      type="button"
+      [tuiHint]="fullLink"
+      (click)="copyFullLink()"
+    >
+      <img src="svg/view.svg" alt="View" />
+    </button>
+  </footer>
+</div>
+<ng-template #dropdown>
+  <tui-data-list size="s">
+    <tui-opt-group>
+      <button tuiOption type="button" (click)="editLink()">
+        Редактировать
+      </button>
+      <!-- <a [routerLink]="getLinkStatisticsUrl()" tuiOption> Статистика </a> -->
+      <button tuiOption type="button" (click)="removeLink()">Удалить</button>
+    </tui-opt-group>
+    <tui-opt-group>
+      <div tuiOption ignore-selection>
+        <b>Создано</b>
+        <p>{{ getLink().item.create_date | formatDate }}</p>
+      </div>
+      @if (getLink().item; as linkObject) { @if (linkObject | wasUpdated) {
+      <div tuiOption ignore-selection>
+        <b>Изменено</b>
+        <p>{{ linkObject.update_date | formatDate }}</p>
+      </div>
+      } }
+    </tui-opt-group>
+  </tui-data-list>
+</ng-template>
+<ng-template [(tuiDialog)]="isEditOpened">
+  <app-link-form-component
+    appEditLinkForm
+    [linkId]="getLink().id"
+  ></app-link-form-component>
+</ng-template>
+<ng-template #fullLink> {{ getLink().item.full_link }} </ng-template>

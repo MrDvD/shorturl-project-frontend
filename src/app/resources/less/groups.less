@@ -1,0 +1,19 @@
+.inline-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  &.wrap-reverse {
+    flex-wrap: wrap-reverse;
+  }
+}
+
+.wide {
+  flex: 1;
+  min-width: fit-content;
+  label {
+    justify-content: center;
+  }
+}

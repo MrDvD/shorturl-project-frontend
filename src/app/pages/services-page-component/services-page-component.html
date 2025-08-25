@@ -1,0 +1,9 @@
+<app-to-services-component [title]="title"></app-to-services-component>
+
+<main class="services-grid">
+  @for (page of services.getAvailablePages(); track page.url) {
+  <a class="service" tuiCardLarge tuiSurface="floating" [routerLink]="page.url"
+    >{{ page.name }}</a
+  >
+  }
+</main>

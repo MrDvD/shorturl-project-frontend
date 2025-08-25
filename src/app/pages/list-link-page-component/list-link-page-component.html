@@ -1,0 +1,16 @@
+<app-to-services-component
+  [title]="title"
+  redirectUrl="/"
+></app-to-services-component>
+<app-sort-option-component
+  (sortChange)="receiveSortParams($event)"
+></app-sort-option-component>
+<div class="link-list">
+  @if (links$ | async; as links) { @for (link of links; track link.id) {
+  <app-link-info-component [link]="link"></app-link-info-component>
+  } @if (links.length === 0) {
+  <b>Ссылок нет</b>
+  } } @else {
+  <p>Загрузка ссылок, подождите...</p>
+  }
+</div>

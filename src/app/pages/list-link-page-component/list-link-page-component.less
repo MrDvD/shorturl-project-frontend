@@ -1,0 +1,18 @@
+@import url('../../resources/less/sizes.less');
+@import url('../../resources/less/buttons.less');
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: @margin-top-before-to-services;
+}
+
+.link-list {
+  display: contents;
+
+  & > b,
+  & > p {
+    text-align: center;
+  }
+}

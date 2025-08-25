@@ -1,0 +1,70 @@
+<form tuiForm="l" tuiAppearance="floating" class="app-form">
+  <tui-textfield>
+    <label tuiLabel htmlFor="login">Логин</label>
+    <input tuiTextfield [disabled]="true" value="{{ getUser().item.login }}" />
+  </tui-textfield>
+  <div class="inline-group">
+    <tui-textfield class="wide">
+      <label tuiLabel htmlFor="email">Email</label>
+      <input tuiTextfield [formControl]="email" #emailInput />
+    </tui-textfield>
+    <button
+      type="button"
+      tuiButton
+      appearance="secondary"
+      class="icon-button"
+      (click)="editEmail()"
+    >
+      @if (isEditingEmail) {
+      <img src="svg/check.svg" alt="Save" />
+      } @else {
+      <img src="svg/pen.svg" alt="Edit" />
+      }
+    </button>
+  </div>
+  <tui-error
+    [formControl]="email"
+    [error]="[] | tuiFieldError | async"
+  ></tui-error>
+  <div class="inline-group">
+    <button
+      tuiButton
+      appearance="primary"
+      class="wide"
+      type="button"
+      (click)="setChangePasswordDialog(true)"
+    >
+      Смена пароля
+    </button>
+    <button
+      tuiButton
+      appearance="accent"
+      class="wide"
+      type="button"
+      (click)="openRemoveDialog()"
+    >
+      Удалить аккаунт
+    </button>
+  </div>
+</form>
+<ng-template
+  [(tuiDialog)]="isRemoveOpened"
+  (changePassword)="openRemoveDialog($event)"
+>
+  <div class="centered-dialog">
+    <button
+      tuiButton
+      appearance="accent"
+      class="wide"
+      type="button"
+      (click)="removeUser()"
+    >
+      Подтверждаю удаление аккаунта
+    </button>
+  </div>
+</ng-template>
+<ng-template [(tuiDialog)]="isChangePasswordOpened">
+  <app-change-password-form-component
+    (isOpened)="setChangePasswordDialog($event)"
+  ></app-change-password-form-component>
+</ng-template>

@@ -1,0 +1,74 @@
+<form
+  tuiForm="l"
+  [formGroup]="userForm"
+  class="app-form"
+  tuiAppearance="floating"
+  (ngSubmit)="sendForm()"
+>
+  <header class="form-header">
+    <b>{{ userForm.getTitle() }}</b>
+  </header>
+
+  <tui-textfield>
+    <label tuiLabel htmlFor="login">Логин</label>
+    <input formControlName="login" tuiTextfield />
+  </tui-textfield>
+  <tui-error
+    formControlName="login"
+    [error]="[] | tuiFieldError | async"
+  ></tui-error>
+  @if ( userFormMode === 'register' ) {
+  <tui-textfield>
+    <label tuiLabel htmlFor="email">Email</label>
+    <input formControlName="email" tuiTextfield />
+  </tui-textfield>
+  <tui-error
+    formControlName="email"
+    [error]="[] | tuiFieldError | async"
+  ></tui-error>
+  }
+
+  <tui-textfield>
+    <label tuiLabel htmlFor="password">Пароль</label>
+    <input formControlName="password" tuiTextfield type="password" />
+  </tui-textfield>
+  <tui-error
+    formControlName="password"
+    [error]="[] | tuiFieldError | async"
+  ></tui-error>
+  @if ( userFormMode === 'register' ) {
+  <tui-textfield>
+    <label tuiLabel htmlFor="confirmPassword">Повторите пароль</label>
+    <input formControlName="confirmPassword" tuiTextfield type="password" />
+  </tui-textfield>
+  <tui-error
+    formControlName="confirmPassword"
+    [error]="[] | tuiFieldError | async"
+  ></tui-error>
+  }
+  <div class="inline-group wrap-reverse">
+    @switch (userFormMode) { @case ('login') {
+    <a
+      tuiButton
+      appearance="secondary"
+      class="paired-button"
+      routerLink="/register"
+      >Регистрация</a
+    >
+    <button tuiButton appearance="primary" type="submit" class="paired-button">
+      Вход
+    </button>
+    } @case ('register') {
+    <a
+      tuiButton
+      appearance="secondary"
+      class="paired-button"
+      routerLink="/login"
+      >Вход</a
+    >
+    <button tuiButton appearance="primary" type="submit" class="paired-button">
+      Регистрация
+    </button>
+    } }
+  </div>
+</form>

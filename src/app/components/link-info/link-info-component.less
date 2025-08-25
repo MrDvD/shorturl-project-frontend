@@ -1,0 +1,48 @@
+@import url('../../resources/less/colors.less');
+
+.link-info-card {
+  padding: 16px !important;
+  gap: 6px !important;
+
+  .link-info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .menu-button {
+      img {
+        width: 16px;
+      }
+    }
+  }
+
+  .link-info-footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+
+    img {
+      width: 16px;
+    }
+  }
+}
+
+.wide {
+  flex: 1;
+}
+
+[ignore-selection] {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: baseline;
+  color: var(--text-secondary-1);
+
+  &:focus,
+  &:hover,
+  &:active {
+    background: none !important;
+    cursor: default;
+  }
+}

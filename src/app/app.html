@@ -1,0 +1,32 @@
+<header class="header-back"></header>
+<header class="header-root">
+  <section class="header-left-side">
+    <a routerLink="/" class="header-button" tuiButton appearance="flat">
+      <p class="header-logo">✂️</p>
+      <p>URL-Shortener</p>
+    </a>
+  </section>
+  <section class="header-right-side">
+    @if (user) {
+    <button tuiButton appearance="flat" class="header-button" (click)="exit()">
+      <img class="header-icon" src="svg/exit.svg" alt="Exit" />
+    </button>
+    <a
+      tuiButton
+      appearance="flat"
+      class="header-button"
+      [routerLink]="`${getUser().item.login}/account`"
+    >
+      <img class="header-icon" src="svg/account.svg" alt="Account" />
+    </a>
+    } @else {
+    <a tuiButton appearance="flat" class="header-button" routerLink="/login">
+      <img class="header-icon" src="svg/enter.svg" alt="Login" />
+    </a>
+    }
+  </section>
+</header>
+
+<tui-root class="router-outlet-wrapper">
+  <router-outlet></router-outlet>
+</tui-root>
